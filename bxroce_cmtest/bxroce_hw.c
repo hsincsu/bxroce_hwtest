@@ -1934,6 +1934,7 @@ errphd:
 	return status;
 }
 
+#if 0 //added by hs
 int bxroce_hw_create_cq(struct bxroce_dev *dev, struct bxroce_cq *cq, int entries, u16 pd_id)
 {
 	BXROCE_PR("bxroce: bxroce_hw_create_cq start\n");//added by hs 
@@ -2468,3 +2469,4 @@ int bxroce_set_qp_params(struct bxroce_qp *qp, struct ib_qp_attr *attrs, int att
 	return status;
 
 }
+#endif
