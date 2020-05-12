@@ -29,6 +29,7 @@
 #include "../../header/bx_rnic.h"
 
 #include "bxroce_verbs.h"
+#include "bxroce_hw.h"
 #include "bxroce_mpb_reg.h"
 
 
@@ -45,6 +46,8 @@
 #define SQ_REG_LEN	0x1000
 #define RQ_REG_LEN	0x1000
 #define CQ_REG_LEN	0x1000
+
+#define MAX_CM_MSG_4BYTE_LEN 100
 
 #ifdef BXROCE_DEBUG
 #define BXROCE_PR(fmt, args...)\
