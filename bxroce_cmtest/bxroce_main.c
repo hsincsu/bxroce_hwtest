@@ -206,6 +206,8 @@ int bxroce_cm_test_msg_recv(struct bxroce_dev *dev)
 	header_flit = 0;
 
 	rdata = bxroce_mpb_reg_read(base_addr,CM_CFG,CMERRINTSTA);
+
+	printk("cm_test_msg_recv: 0x%x \n",rdata);
 	if (rdma_get_bits(rdata, 0, 0) == 1)
 	{
 		BXROCE_PR("have intr\n");
@@ -277,6 +279,7 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
 	while (testnumber-- )
 	{
 		get_random_bytes(&randnumber,sizeof(unsigned long));
+		printk("randnumber is %x \n",randnumber);
 		switch (randnumber % 3) {
 		case 0 : status = bxroce_cm_test_msg_recv(dev);
 				 if(status == -1)
