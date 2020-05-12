@@ -381,6 +381,7 @@ static int bxroce_init_cm(struct bxroce_dev *dev)
 	return 0;
 }
 
+#if 0 //added by hs
 static int bxroce_init_dev_attr(struct bxroce_dev *dev)
 {
 	BXROCE_PR("bxroce: bxroce_init_dev_attr \n");//added by hs 
@@ -394,7 +395,7 @@ err1:
 	printk("query device failed\n");//added by hs 
 	return err;
 }
-
+#endif
 
 #if 0 //added by hs
 
