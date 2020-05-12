@@ -10,6 +10,7 @@
 #ifndef __BXROCE_VERBS_H__
 #define __BXROCE_VERBS_H__
 
+#if 0  //added by hs 
 
 struct bxroce_pbe {
 	u32 pa_hi;
@@ -252,35 +253,38 @@ struct bxroce_pbl {
 	dma_addr_t pa;
 	u32 size;
 };
+#endif
+
 
 struct bxroce_dev{
 	struct ib_device ibdev;
 	struct ib_device_attr attr;
 	struct bx_dev_info devinfo;
 //	unsigned long *pd_id; // for allocate an unique id to each pd.
-	struct mutex pd_mutex;
+//	struct mutex pd_mutex;
 	struct mutex dev_lock; 
 	//not finished ,added later.
 
-	struct bxroce_pool mr_pool;
-	struct bxroce_pool pd_pool;
-	u8 *mem_resources; // for bitmap memory
-	unsigned long *allocated_cqs; // allocate id for cqs
-	unsigned long *allocated_qps;//allocated id for qps
-	struct bxroce_qp **qp_table;
-	struct bxroce_cq **cq_table;
+	//struct bxroce_pool mr_pool;
+	//struct bxroce_pool pd_pool;
+	//u8 *mem_resources; // for bitmap memory
+	//unsigned long *allocated_cqs; // allocate id for cqs
+	//unsigned long *allocated_qps;//allocated id for qps
+	//struct bxroce_qp **qp_table;
+	//struct bxroce_cq **cq_table;
 
-	struct {
-		struct bxroce_av *va;
-		dma_addr_t pa;
-		u32 size;
-		u32 num_ah;
+	//struct {
+	//	struct bxroce_av *va;
+	//	dma_addr_t pa;
+	//	u32 size;
+	//	u32 num_ah;
 
-		spinlock_t lock;/*for synchronization*/
-		u32 ahid;
-		struct bxroce_pbl pbl;
-	} av_tbl;
+	//	spinlock_t lock;/*for synchronization*/
+	//	u32 ahid;
+	//	struct bxroce_pbl pbl;
+//	} av_tbl;
 
+#if 0 //added by hs
 	u32 next_cq;
 	u32 next_qp;
 	u32 used_cqs;
@@ -294,8 +298,10 @@ struct bxroce_dev{
 	int Is_qp1_allocated;
 	struct bxroce_cq *gsi_sqcq;
 	struct bxroce_cq *gsi_rqcq;
+#endif
 };
 
+#if 0 //added by hs
 struct bxroce_ucontext {
 	struct ib_ucontext ibucontext;
 	struct list_head mm_head; 
@@ -319,7 +325,7 @@ struct bxroce_mm {
 	} key;
 	struct list_head entry;
 };
-
+#endif
 /*some function definition*/
 //static int bxroce_alloc_lkey(struct bxroce_dev *dev,struct bxroce_mr *mr,u32 pdid, int acc);//alter later --2019/10/28 hs
 #endif

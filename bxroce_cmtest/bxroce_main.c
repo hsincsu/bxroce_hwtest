@@ -297,6 +297,8 @@ static struct bxroce_dev *bx_add(struct bx_dev_info *dev_info)
 	BXROCE_PR("bxroce:bx_add start\n");//added by hs for printing info
 	
 	struct bxroce_dev *dev;
+	int status = 0;
+
 	dev = kzalloc(sizeof(*dev),GFP_KERNEL);
 	if(!dev) {
 		printk("bxroce:Unable to allocate ib device\n");//to show the err information.
