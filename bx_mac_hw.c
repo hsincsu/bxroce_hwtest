@@ -3133,8 +3133,15 @@ static int mac_hw_init(struct mac_pdata *pdata)
 
 	//added by hs for loopback in pcs
 #if 1
-	struct rnic_pdata *rnic_pdata = &pdata->rnic_pdata;
-	pcs_loopback_cfg(rnic_pdata,0);
+//	struct rnic_pdata *rnic_pdata = &pdata->rnic_pdata;
+//	pcs_loopback_cfg(rnic_pdata,0);
+	
+	u32 regval = 0;
+        regval = readl(pdata->mac_regs + MAC_RCR);
+        regval = MAC_SET_REG_BITS(regval,10,1,1);
+        writel(regval, pdata->mac_regs + MAC_RCR);
+
+
 #endif
     
     /* Flush Tx queues */
