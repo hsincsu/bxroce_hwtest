@@ -111,7 +111,7 @@ void set_len(int port_id, int len)
 
 
 
-void bxroce_cm_test_msg_send(struct bxroce_dev *dev)
+int bxroce_cm_test_msg_send(struct bxroce_dev *dev)
 {
 	int addr;    	
 	int rdata;
@@ -177,7 +177,7 @@ void bxroce_cm_test_msg_send(struct bxroce_dev *dev)
 
 		wdata = rdma_set_bits(wdata,CM_MSG_SEND_MSG_SRAM_WR_FINISH_RANGE,1);
 
-		bxroce_mpb_reg_write(base_addr,CM_CFG,wdata);
+		bxroce_mpb_reg_write(base_addr,CM_CFG,addr,wdata);
 
 		printk("INFO: port_%0d cm msg send:\tcm_msg_4byte_len=%08X.\n",port_id,cm_msg_4byte_len);
 
