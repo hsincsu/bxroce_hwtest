@@ -130,7 +130,7 @@ int bxroce_cm_test_msg_send(struct bxroce_dev *dev)
 	base_addr = dev->devinfo.base_addr;
 
 	header_flit = 0;
-	randnumber = get_random_bytes(&randnumber,sizeof(unsigned long));
+	get_random_bytes(&randnumber,sizeof(unsigned long));
 	cm_msg_4byte_len = randnumber % MAX_CM_MSG_4BYTE_LEN + 5;
 
 	if(cm_msg_4byte_len % 4 == 0)
@@ -235,7 +235,7 @@ int bxroce_cm_test_msg_recv(struct bxroce_dev *dev)
 				 addr = 0;
 				 for (i = 0; i < 4; i++)
 				 {
-					 rdata = bxroce_mpb_reg_read(base_addr,CM_BASE,addr)
+					 rdata = bxroce_mpb_reg_read(base_addr,CM_BASE,addr);
 #ifndef NO_CHECK_CM_MSG
 						 if (rdata != header_flit)
 						 {
@@ -270,13 +270,14 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
 	struct bx_dev_info *devinfo = &dev->devinfo;
 	unsigned long randnumber;
 	unsigned long testnumber; 
+	int status = 0;
 
 	testnumber = 600;
 	printk("------------------CM_RANDOME_TEST START--------------- \n");
 	while (testnumber-- )
 	{
-		randnumber = get_random_bytes(&randnumber,sizeof(unsigned long));
-		switch (rand() % 3) {
+		get_random_bytes(&randnumber,sizeof(unsigned long));
+		switch (randnumber % 3) {
 		case 0 : status = bxroce_cm_test_msg_recv(dev);
 				 if(status == -1)
 					 return status;
