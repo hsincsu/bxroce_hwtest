@@ -54,7 +54,7 @@ static struct bxroce_dev *bx_add(struct bx_dev_info *dev_info)
 	if(status)
 		goto err_init_hw;
 
-
+	
 
 
 	BXROCE_PR("bxroce:bx_add succeed end\n");//added by hs for printing info

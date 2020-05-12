@@ -375,6 +375,9 @@ static int bxroce_init_cm(struct bxroce_dev *dev)
 	bxroce_mpb_reg_write(base_addr,CM_CFG,CMLOGEN,0x7);
 	bxroce_mpb_reg_write(base_addr,CM_CFG,CMERREN,0x7);
 	bxroce_mpb_reg_write(base_addr,CM_CFG,CMINTEN,0x7);
+
+
+
 	return 0;
 }
 
@@ -391,6 +394,9 @@ err1:
 	printk("query device failed\n");//added by hs 
 	return err;
 }
+
+
+#if 0 //added by hs
 
 void bxroce_init_tlb(void __iomem *base_addr)
 {
@@ -582,6 +588,11 @@ static int bxroce_init_qp(struct bxroce_dev *dev)
 	printk("----------------------PGU INIT REG INFO END -----------------------------\n");
 
 }
+
+
+#endif 
+
+
 
 static void mac_config_mpb_mac(struct bxroce_dev *dev, int mac_id)
 {
@@ -1688,6 +1699,8 @@ int bxroce_init_hw(struct bxroce_dev *dev)
 	status = bxroce_init_cm(dev);
 	if (status)
 		goto errcm;
+
+#if 0 //added by hs
 	status = bxroce_init_pgu_wqe(dev);
 	if (status)
 		goto errcm;
@@ -1700,6 +1713,8 @@ int bxroce_init_hw(struct bxroce_dev *dev)
 	status = bxroce_init_dev_attr(dev);
 	if(status)
 		goto errcm;
+#endif
+
 	return 0;
 
 errcm:
