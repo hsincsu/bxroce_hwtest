@@ -3131,18 +3131,6 @@ static int mac_hw_init(struct mac_pdata *pdata)
     
     RNIC_TRACE_PRINT();
 
-	//added by hs for loopback in pcs
-#if 1
-//	struct rnic_pdata *rnic_pdata = &pdata->rnic_pdata;
-//	pcs_loopback_cfg(rnic_pdata,0);
-	
-	u32 regval = 0;
-        regval = readl(pdata->mac_regs + MAC_RCR);
-        regval = MAC_SET_REG_BITS(regval,10,1,1);
-        writel(regval, pdata->mac_regs + MAC_RCR);
-
-
-#endif
     
     /* Flush Tx queues */
     ret = mac_flush_tx_queues(pdata);
@@ -3189,6 +3177,21 @@ static int mac_hw_init(struct mac_pdata *pdata)
     mac_config_vlan_support(pdata);
     mac_config_mmc(pdata);
     mac_enable_mac_interrupts(pdata);
+
+		//added by hs for loopback in pcs
+#if 1
+//	struct rnic_pdata *rnic_pdata = &pdata->rnic_pdata;
+//	pcs_loopback_cfg(rnic_pdata,0);
+	
+	u32 regval = 0;
+        regval = readl(pdata->mac_regs + MAC_RCR);
+        regval = MAC_SET_REG_BITS(regval,10,1,1);
+        writel(regval, pdata->mac_regs + MAC_RCR);
+
+
+#endif
+
+
 
 
     //insomnia@20200205

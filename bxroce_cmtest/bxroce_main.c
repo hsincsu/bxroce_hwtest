@@ -274,7 +274,7 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
 	unsigned long testnumber; 
 	int status = 0;
 
-	testnumber = 600;
+	testnumber = 1000;
 	printk("------------------CM_RANDOME_TEST START--------------- \n");
 	while (testnumber-- )
 	{
@@ -312,6 +312,10 @@ static struct bxroce_dev *bx_add(struct bx_dev_info *dev_info)
 	memcpy(&dev->devinfo, dev_info, sizeof(*dev_info));
 
 	status = bxroce_init_hw(dev);
+	if(status)
+		goto err_init_hw;
+
+	status = bxroce_get_hwinfo(dev);
 	if(status)
 		goto err_init_hw;
 
