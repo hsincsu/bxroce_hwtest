@@ -127,6 +127,8 @@ int bxroce_cm_test_msg_send(struct bxroce_dev *dev)
 	void __iomem *base_addr;
 	int status = 0;
 
+	printk("------------CM MSG SEND START----------- \n");
+
 	base_addr = dev->devinfo.base_addr;
 
 	header_flit = 0;
@@ -151,6 +153,8 @@ int bxroce_cm_test_msg_send(struct bxroce_dev *dev)
 		port_id = 0;
 
 		rdata = rdma_set_bits(rdata,17,17,port_id);
+
+		printk("");
 
 		bxroce_mpb_reg_write(base_addr,CM_CFG,CM_REG_ADDR_MSG_SEND_MSG_LLP_INFO_5,rdata);
 
@@ -181,6 +185,9 @@ int bxroce_cm_test_msg_send(struct bxroce_dev *dev)
 
 		printk("INFO: port_%0d cm msg send:\tcm_msg_4byte_len=%08X.\n",port_id,cm_msg_4byte_len);
 
+		printk("------------CM MSG SEND START----------- \n");
+		printk("\n");
+
 	}
 
 	return 0;
@@ -201,6 +208,7 @@ int bxroce_cm_test_msg_recv(struct bxroce_dev *dev)
 
 	void __iomem *base_addr;
 	int status = 0;
+	printk("------------CM MSG RECV START----------- \n");
 
 	base_addr = dev->devinfo.base_addr;
 	header_flit = 0;
@@ -278,6 +286,8 @@ int bxroce_cm_test_msg_recv(struct bxroce_dev *dev)
 	else
 		printk("cm_random_test_msg_recv with get_bit(rdata,0)=%d \n",rdma_get_bits(rdata,0,0));
 
+	printk("------------CM MSG RECV END----------- \n");
+	printk("\n");
 	return status;
 }
 
