@@ -185,10 +185,12 @@ int bxroce_cm_test_msg_send(struct bxroce_dev *dev)
 
 		printk("INFO: port_%0d cm msg send:\tcm_msg_4byte_len=%08X.\n",port_id,cm_msg_4byte_len);
 
-		printk("------------CM MSG SEND START----------- \n");
-		printk("\n");
+		
 
 	}
+
+	printk("------------CM MSG SEND END----------- \n");
+	printk("\n");
 
 	return 0;
 }
