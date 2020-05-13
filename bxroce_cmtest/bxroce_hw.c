@@ -327,8 +327,11 @@ static int phd_txdesc_init(struct bxroce_dev *dev)
 
 static int bxroce_init_phd(struct bxroce_dev *dev)
 {
-#if 0  //added by hs
+
 	int status;
+
+#if 0  //added by hs
+
 	status = phd_txdesc_init(dev);
 	if (status)
 		goto phdtxrxdesc_err;
