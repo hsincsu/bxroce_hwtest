@@ -168,7 +168,7 @@ int bxroce_cm_test_msg_send(struct bxroce_dev *dev)
 
 		for (i = 0; i < cm_msg_4byte_len - 4; i++)
 		{
-			bxroce_mpb_reg_write(base_addr, CM_BASE, addr, ((cm_msg_4byte_len & 0xffff) << 16) + (i & 0xffff));
+			bxroce_mpb_reg_write(base_addr, CM_BASE, addr,((cm_msg_4byte_len & 0xffff) << 16) + (i & 0xffff));
 			addr = addr + 1;
 		}
 
@@ -248,6 +248,22 @@ int bxroce_cm_test_msg_recv(struct bxroce_dev *dev)
 					 addr = addr + 1;
 #endif
 				 }
+
+				  for(i = 0; i < golden_cm_msg_4byte_len - 4; i++) 
+                    {
+                        rdata = bxroce_mpb_reg_read(base_addr,CM_BASE,addr);
+                    #ifndef NO_CHECK_CM_MSG
+                        if(rdata != (golden_cm_msg_4byte_len << 16) + (i & 0xffff))
+                        {
+                            printk("SIMERR: port_%d rdata (%08X) is not equal with golden_cm_rdata(%08X).\n",port_id,rdata,(golden_cm_msg_4byte_len << 16) + (i & 0xffff)); 
+                            status = -1;
+							break;
+                        }    
+                    #endif
+                        addr = addr + 1;
+                    }
+
+
 
 				 wdata = 0;
 				 wdata = rdma_set_bits(wdata,CM_MSG_RECEIVE_MSG_SRAM_RD_FINISH_RANGE,1);
