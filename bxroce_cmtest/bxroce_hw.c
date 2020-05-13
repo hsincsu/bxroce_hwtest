@@ -1649,6 +1649,7 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 
 	mac_rdma_config_mtl_tc_quantum_weight(dev);
 
+	mac_rdma_enable_mtl_interrupts(dev);  //maybe error
 
 	/*DMA RELATED REG SETTING*/
 
@@ -1672,9 +1673,9 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	
 	mac_rdma_enable_dma_interrupts(dev);
 
-	
-	mac_rdma_enable_mtl_interrupts(dev);  //maybe error
-	
+
+	mac_mpb_config_dis_tcp_ef_off(dev);
+
 	mac_rdma_config_flow_control(dev);
 
 	mac_rdma_channel_mpb_l3_l4_filter_on(dev);
