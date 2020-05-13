@@ -220,13 +220,13 @@ static int phd_mac_init(struct bxroce_dev *dev)
 	bxroce_mpb_reg_write(base_addr,PHD_BASE_1,PHDMACSOURCEADDR_H,macaddr_h);
 	bxroce_mpb_reg_write(base_addr,PHD_BASE_1,PHDMACSOURCEADDR_L,macaddr_l);
 #endif
-	u32 regval = 0;
-	regval = bxroce_mpb_reg_read(base_addr,PGU_BASE,SOCKETID);
-        printk("bxroce: socketid mac before write: 0x%x \n",regval);	
+//	u32 regval = 0;
+//	regval = bxroce_mpb_reg_read(base_addr,PGU_BASE,SOCKETID);
+//        printk("bxroce: socketid mac before write: 0x%x \n",regval);	
 
-	bxroce_mpb_reg_write(base_addr,PGU_BASE,SOCKETID,macaddr_l);
-	regval = bxroce_mpb_reg_read(base_addr,PGU_BASE,SOCKETID);
-	printk("bxroce: socketid mac after wirte: 0x%x \n",regval);	
+//	bxroce_mpb_reg_write(base_addr,PGU_BASE,SOCKETID,macaddr_l);
+//	regval = bxroce_mpb_reg_read(base_addr,PGU_BASE,SOCKETID);
+//	printk("bxroce: socketid mac after wirte: 0x%x \n",regval);	
 
 	BXROCE_PR("bxroce:%s end \n",__func__);//added by hs
 	/*end*/
