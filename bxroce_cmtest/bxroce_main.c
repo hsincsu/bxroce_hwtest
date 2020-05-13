@@ -320,6 +320,11 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
 
 	}
 	printk("------------------CM_RANDOME_TEST END--------------- \n");
+
+
+	//clear the msg sram and clear the flit
+
+
 	return status;
 }
 
