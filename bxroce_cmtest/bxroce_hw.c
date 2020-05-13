@@ -1331,9 +1331,10 @@ static int mac_rdma_enable_tx_flow_control(struct bxroce_dev *dev)
 static int mac_rdma_config_tx_flow_control(struct bxroce_dev *dev)
 {
 	struct bx_dev_info *devinfo = &dev->devinfo; 
-	
-	if (devinfo->pdata->tx_pause)
-		mac_rdma_enable_tx_flow_control(dev);
+	bool enable_fw = true; //added by hs
+	//if (devinfo->pdata->tx_pause) // del by hs
+	  if (enable_fw)
+	    mac_rdma_enable_tx_flow_control(dev);
 	else
 		mac_rdma_disable_tx_flow_control(dev);
 	 
@@ -1359,6 +1360,7 @@ static void mac_rdma_config_mtl_tc_quantum_weight(struct bxroce_dev *dev)
 	 regval = readl(MAC_RDMA_MTL_REG(devinfo, RDMA_CHANNEL,MTL_Q_QWR));
 	 regval = MAC_SET_REG_BITS(regval,MTL_Q_QWR_QW_POS,
 							   MTL_Q_QWR_QW_LEN,0xa);
+	 writel(regval,MAC_RDMA_MTL_REG(devinfo,RDMA_CHANNEL,MTL_Q_QWR));
 }
 
 
@@ -1625,6 +1627,31 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	//mac_mpb_config_osp_mode(dev);
 	
 	mac_mpb_flush_tx_queues(dev);
+
+	/*MTL RELATED REG SETTING*/
+//	mac_rdma_config_tsf_mode(dev,dev->devinfo.pdata->tx_sf_mode);
+//	mac_rdma_config_rsf_mode(dev,dev->devinfo.pdata->rx_sf_mode);
+
+	mac_rdma_config_tsf_mode(dev,1);//added by hs
+	mac_rdma_config_rsf_mode(dev,1);//added by hs
+
+//	mac_rdma_config_tx_threshold(dev,dev->devinfo.pdata->tx_threshold);
+//	mac_rdma_config_rx_threshold(dev,dev->devinfo.pdata->rx_threshold);
+
+	mac_rdma_config_tx_threshold(dev,0);//added by hs
+	mac_rdma_config_rx_threshold(dev,0);//added by hs
+
+	mac_rdma_config_tx_fifo_size(dev); //pf should be changed
+	mac_rdma_config_rx_fifo_size(dev); //pf should be changed
+
+	mac_rdma_config_flow_control_threshold(dev);
+	mac_rdma_config_rx_fep_enable(dev);
+
+	mac_rdma_config_mtl_tc_quantum_weight(dev);
+
+
+	/*DMA RELATED REG SETTING*/
+
 	mac_mpb_config_osp_mode(dev);
 
 	//added by lyp
@@ -1637,7 +1664,7 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	
 	mac_rdma_config_tso_mode(dev); //may not need
 	mac_rdma_config_sph_mode(dev);  //may not need, sph 1, we do not konw sph is 0 or 1 in rdma
-	mac_mpb_config_dis_tcp_ef_off(dev); //add by hs
+	
 
 	mac_rdma_tx_desc_init(dev,0);   //may be error for descripotr addr
 	mac_rdma_rx_desc_init(dev,0);  //may be error for descripotr addr
@@ -1645,27 +1672,10 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	
 	mac_rdma_enable_dma_interrupts(dev);
 
-	mac_rdma_config_tsf_mode(dev,dev->devinfo.pdata->tx_sf_mode);
-	mac_rdma_config_rsf_mode(dev,dev->devinfo.pdata->rx_sf_mode);
-
-//	mac_rdma_config_tsf_mode(dev,1);//added by hs
-//	mac_rdma_config_rsf_mode(dev,1);//added by hs
-
-	mac_rdma_config_tx_threshold(dev,dev->devinfo.pdata->tx_threshold);
-	mac_rdma_config_rx_threshold(dev,dev->devinfo.pdata->rx_threshold);
-
-//	mac_rdma_config_tx_threshold(dev,0);//added by hs
-//	mac_rdma_config_rx_threshold(dev,0);//added by hs
-
-	mac_rdma_config_tx_fifo_size(dev); //pf should be changed
-	mac_rdma_config_rx_fifo_size(dev); //pf should be changed
-
-	mac_rdma_config_flow_control_threshold(dev);
-	mac_rdma_config_rx_fep_enable(dev);
-
+	
 	mac_rdma_enable_mtl_interrupts(dev);  //maybe error
+	
 	mac_rdma_config_flow_control(dev);
-	mac_rdma_config_mtl_tc_quantum_weight(dev);
 
 	mac_rdma_channel_mpb_l3_l4_filter_on(dev);
 

@@ -336,6 +336,33 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
 
 	//clear the msg sram and clear the flit
 
+	printk("--------------------DMA_CH_CA   printing info start --------------------------\n");
+		regval = readl(MAC_RDMA_DMA_REG(devinfo,DMA_CH_CA_TDLR));
+		BXROCE_PR("DMA_CH_CA_TDLR: 0x%x \n",regval);
+
+		regval = readl(MAC_RDMA_DMA_REG(devinfo,DMA_CH_CA_TDHR));
+		BXROCE_PR("DMA_CH_CA_TDHR: 0x%x \n",regval);
+		
+		regval = readl(MAC_RDMA_DMA_REG(devinfo,DMA_CH_CA_RDLR));
+		BXROCE_PR("DMA_CH_CA_RDLR: 0x%x \n",regval);
+
+		regval = readl(MAC_RDMA_DMA_REG(devinfo,DMA_CH_CA_RDHR));
+		BXROCE_PR("DMA_CH_CA_RDHR: 0x%x \n",regval);
+
+		regval = readl(MAC_RDMA_DMA_REG(devinfo,DMA_CH_CA_TBLR));
+		BXROCE_PR("DMA_CH_CA_TBLR: 0x%x \n",regval);
+	
+		regval = readl(MAC_RDMA_DMA_REG(devinfo,DMA_CH_CA_TBHR));
+		BXROCE_PR("DMA_CH_CA_TBHR: 0x%x \n",regval);
+
+		regval = readl(MAC_RDMA_DMA_REG(devinfo,DMA_CH_CA_RBLR));
+		BXROCE_PR("DMA_CH_CA_RBLR: 0x%x \n",regval);
+	
+		regval = readl(MAC_RDMA_DMA_REG(devinfo,DMA_CH_CA_RBHR));
+		BXROCE_PR("DMA_CH_CA_RBHR: 0x%x \n",regval);
+	
+		printk("--------------------DMA_CH_CA  printing info end --------------------------\n");
+
 
 	return status;
 }
