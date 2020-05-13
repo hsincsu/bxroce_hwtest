@@ -341,9 +341,9 @@ static int bxroce_init_phd(struct bxroce_dev *dev)
 
 #endif
 	
-	status = phd_mac_init(dev);
-	if (status)
-		goto mac_err;
+//	status = phd_mac_init(dev);
+//	if (status)
+//		goto mac_err;
 	status = phd_ipv4_init(dev);
 	if (status)
 		goto iperr;
