@@ -1574,6 +1574,9 @@ static void mac_rdma_enable_tx(struct bxroce_dev *dev)
 	  regval = readl(MAC_RDMA_DMA_REG(devinfo, DMA_CH_TDLR_LO));
 	  BXROCE_PR("DMA_CH_TDLR_LO(0x14): 0x%x \n",regval);
 
+	  regval = readl(MAC_RDMA_DMA_REG(devinfo, DMA_CH_TDTR_HI));
+	  BXROCE_PR("DMA_CH_TDTR_LO(0x24): 0x%x \n",regval);
+
 	  regval = readl(MAC_RDMA_DMA_REG(devinfo, DMA_CH_TDTR_LO));
 	  BXROCE_PR("DMA_CH_TDTR_LO(0x24): 0x%x \n",regval);
 
@@ -1585,6 +1588,9 @@ static void mac_rdma_enable_tx(struct bxroce_dev *dev)
 
 	  regval = readl(MAC_RDMA_DMA_REG(devinfo, DMA_CH_RDLR_LO));
 	  BXROCE_PR("DMA_CH_RDLR_LO(0x1c): 0x%x \n",regval);
+
+	  regval = readl(MAC_RDMA_DMA_REG(devinfo, DMA_CH_RDTR_HI));
+	  BXROCE_PR("DMA_CH_RDTR_LO(0x2c): 0x%x \n",regval);
 
 	  regval = readl(MAC_RDMA_DMA_REG(devinfo, DMA_CH_RDTR_LO));
 	  BXROCE_PR("DMA_CH_RDTR_LO(0x2c): 0x%x \n",regval);
@@ -1714,15 +1720,15 @@ int bxroce_init_hw(struct bxroce_dev *dev)
 	status = bxroce_init_mac_channel(dev);
 	if(status)
 		goto err_mac_channel;
-	status = bxroce_init_pbu(dev);
-	if(status)
-		goto err_pbu;
-	status = bxroce_init_phd(dev);
-	if (status)
-		goto errphd;
 	status = bxroce_init_cm(dev);
 	if (status)
 		goto errcm;
+	status = bxroce_init_pbu(dev);
+	if(status)
+		goto err_pbu;
+		status = bxroce_init_phd(dev);
+	if (status)
+		goto errphd;
 
 #if 0 //added by hs
 	status = bxroce_init_pgu_wqe(dev);
