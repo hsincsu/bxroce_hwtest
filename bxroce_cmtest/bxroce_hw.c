@@ -341,9 +341,9 @@ static int bxroce_init_phd(struct bxroce_dev *dev)
 
 #endif
 	
-//	status = phd_mac_init(dev);
-//	if (status)
-//		goto mac_err;
+	status = phd_mac_init(dev);
+	if (status)
+		goto mac_err;
 	status = phd_ipv4_init(dev);
 	if (status)
 		goto iperr;
@@ -1619,6 +1619,11 @@ static void mac_rdma_enable_tx(struct bxroce_dev *dev)
 	  regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_PFR));
 	  BXROCE_PR("MAC_PFR(0x0008): 0x%x \n",regval);
 
+	  regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_MACA0HR));
+	  BXROCE_PR("MAC_MACAOHR(0x0300): 0x%x \n",regval);
+
+	  regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_MACA0LR));
+	  BXROCE_PR("MAC_MACAOLO(0x0304): 0x%x \n",regval);
  
 	  BXROCE_PR("----------------------------MAC RDMA PRINTF INFO END-------------- \n");
  }
