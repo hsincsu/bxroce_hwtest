@@ -330,7 +330,7 @@ static int bxroce_init_phd(struct bxroce_dev *dev)
 
 	int status;
 
-#if 0  //added by hs
+#if 1  //added by hs
 
 	status = phd_txdesc_init(dev);
 	if (status)
@@ -1604,6 +1604,12 @@ static void mac_rdma_enable_tx(struct bxroce_dev *dev)
 
 	  regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_RCR));
 	  BXROCE_PR("MAC_RCR(0x0004): 0x%x \n",regval);
+
+	  regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_TCR));
+	  BXROCE_PR("MAC_TCR(0x0000): 0x%x \n",regval);
+
+	  regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_PFR));
+	  BXROCE_PR("MAC_PFR(0x0008): 0x%x \n",regval);
 
  
 	  BXROCE_PR("----------------------------MAC RDMA PRINTF INFO END-------------- \n");
