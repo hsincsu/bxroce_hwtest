@@ -301,6 +301,7 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
 	unsigned long randnumber;
 	unsigned long testnumber; 
 	int status = 0;
+	u32 regval = 0;
 
 	rptr_0      = 0;
     rptr_1      = 0;
