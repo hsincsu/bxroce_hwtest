@@ -290,6 +290,18 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
 	unsigned long testnumber; 
 	int status = 0;
 
+	rptr_0      = 0;
+    rptr_1      = 0;
+    wptr_0      = 0;
+    wptr_1      = 0;
+
+    send_cnt_0  = 0;
+    recv_cnt_0  = 0;
+    send_cnt_1  = 0;
+    recv_cnt_1  = 0;
+    send_len    = 0;
+
+
 	testnumber = 1000;
 	printk("------------------CM_RANDOME_TEST START--------------- \n");
 	while (testnumber-- )
