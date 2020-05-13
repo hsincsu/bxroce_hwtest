@@ -154,7 +154,7 @@ int bxroce_cm_test_msg_send(struct bxroce_dev *dev)
 
 		rdata = rdma_set_bits(rdata,17,17,port_id);
 
-		printk("");
+		printk("In send, rdata is 0x%x \n",rdata);
 
 		bxroce_mpb_reg_write(base_addr,CM_CFG,CM_REG_ADDR_MSG_SEND_MSG_LLP_INFO_5,rdata);
 
@@ -277,7 +277,7 @@ int bxroce_cm_test_msg_recv(struct bxroce_dev *dev)
 
 				 wdata = 0;
 				 wdata = rdma_set_bits(wdata,CM_MSG_RECEIVE_MSG_SRAM_RD_FINISH_RANGE,1);
-				 bxroce_mpb_reg_write(base_addr,CM_BASE,CM_REG_ADDR_MSG_SRAM_OPERATE_FINISH,wdata);
+				 bxroce_mpb_reg_write(base_addr,CM_CFG,CM_REG_ADDR_MSG_SRAM_OPERATE_FINISH,wdata);
 				 
 				 printk("INFO: port_%0d cm msg recv:\tcm_msg_4byte_len=%08X.\n",port_id,golden_cm_msg_4byte_len);
 
@@ -315,7 +315,7 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
     send_len    = 0;
 
 
-	testnumber = 1000;
+	testnumber = 2048;
 	printk("------------------CM_RANDOME_TEST START--------------- \n");
 	while (testnumber-- )
 	{
