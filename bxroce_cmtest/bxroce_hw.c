@@ -1204,12 +1204,13 @@ static void mac_rdma_config_flow_control_threshold(struct bxroce_dev *dev)
 
 	regval = MAC_SET_REG_BITS(regval, MTL_Q_RQFCR_RFA_POS,
                          MTL_Q_RQFCR_RFA_LEN, 0xe);
+
         /* De-activate flow control when more than 6k left in fifo */
 //    regval = MAC_SET_REG_BITS(regval, MTL_Q_RQFCR_RFD_POS,
 //                         MTL_Q_RQFCR_RFD_LEN, 4);
 
 	 regval = MAC_SET_REG_BITS(regval, MTL_Q_RQFCR_RFD_POS,
-                         MTL_Q_RQFCR_RFD_LEN, 0x2c);
+                         MTL_Q_RQFCR_RFD_LEN, 0x16);
     writel(regval, MAC_RDMA_MTL_REG(devinfo, RDMA_CHANNEL, MTL_Q_RQFCR));  //by lyp
     
 }
@@ -1534,6 +1535,20 @@ static void mac_rdma_enable_tx(struct bxroce_dev *dev)
  
  }
  
+static void mac_rdma_config_q2tcmap(struct bxroce_dev *dev)
+{
+		struct bx_dev_info *devinfo = &dev->devinfo;
+		u32 regval = 0;
+
+		regval = readl(MAC_RDMA_MTL_REG(devinfo,RDMA_CHANNEL,MTL_Q_TQOMR));
+		regval = MAC_SET_REG_BITS(regval, MTL_Q_TQOMR_Q2TCMAP_POS,
+								  MTL_Q_TQOMR_Q2TCMAP_LEN,6);
+		writel(regval,MAC_RDMA_MTL_REG(devinfo,RDMA_CHANNEL,MTL_Q_TQOMR));
+
+}
+
+
+
  static void mac_rdma_print_regval(struct bxroce_dev *dev)
  {
 	  struct bx_dev_info *devinfo = &dev->devinfo;
@@ -1582,7 +1597,7 @@ static void mac_rdma_enable_tx(struct bxroce_dev *dev)
 	  BXROCE_PR("DMA_CH_TDLR_LO(0x14): 0x%x \n",regval);
 
 	  regval = readl(MAC_RDMA_DMA_REG(devinfo, DMA_CH_TDTR_HI));
-	  BXROCE_PR("DMA_CH_TDTR_LO(0x24): 0x%x \n",regval);
+	  BXROCE_PR("DMA_CH_TDTR_HI(0x20): 0x%x \n",regval);
 
 	  regval = readl(MAC_RDMA_DMA_REG(devinfo, DMA_CH_TDTR_LO));
 	  BXROCE_PR("DMA_CH_TDTR_LO(0x24): 0x%x \n",regval);
@@ -1597,7 +1612,7 @@ static void mac_rdma_enable_tx(struct bxroce_dev *dev)
 	  BXROCE_PR("DMA_CH_RDLR_LO(0x1c): 0x%x \n",regval);
 
 	  regval = readl(MAC_RDMA_DMA_REG(devinfo, DMA_CH_RDTR_HI));
-	  BXROCE_PR("DMA_CH_RDTR_LO(0x2c): 0x%x \n",regval);
+	  BXROCE_PR("DMA_CH_RDTR_HI(0x28): 0x%x \n",regval);
 
 	  regval = readl(MAC_RDMA_DMA_REG(devinfo, DMA_CH_RDTR_LO));
 	  BXROCE_PR("DMA_CH_RDTR_LO(0x2c): 0x%x \n",regval);
@@ -1664,6 +1679,8 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 
 	mac_rdma_config_flow_control_threshold(dev);
 	mac_rdma_config_rx_fep_enable(dev);
+
+	mac_rdma_config_q2tcmap(dev);
 
 	mac_rdma_config_mtl_tc_quantum_weight(dev);
 
