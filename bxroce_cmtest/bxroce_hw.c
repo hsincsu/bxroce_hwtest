@@ -1698,9 +1698,9 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	mac_rdma_enable_rx(dev);
 	//end added by lyp
 
+	mac_print_all_regs(rnic_pdata,0);//
 
-
-	mac_rdma_print_regval(dev);
+	//mac_rdma_print_regval(dev);
 
 
 	//mac_mpb_channel_cfg(rnic_pdata,0);
