@@ -1671,7 +1671,7 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 //	mac_rdma_config_tx_threshold(dev,dev->devinfo.pdata->tx_threshold);
 //	mac_rdma_config_rx_threshold(dev,dev->devinfo.pdata->rx_threshold);
 
-	mac_rdma_config_tx_threshold(dev,0x5);//added by hs
+	mac_rdma_config_tx_threshold(dev,0);//added by hs
 	mac_rdma_config_rx_threshold(dev,0);//added by hs
 
 	mac_rdma_config_tx_fifo_size(dev); //pf should be changed
