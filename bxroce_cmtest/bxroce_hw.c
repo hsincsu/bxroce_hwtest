@@ -1564,6 +1564,18 @@ static void mac_rdma_config_jd_on(struct bxroce_dev *dev)
 
 }
 
+static void mac_rdma_config_tx_start(struct bxroce_dev *dev)
+{
+		struct bx_dev_info *devinfo = &dev->devinfo;
+		u32 regval = 0;
+
+		regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_TCR));
+		regval = MAC_SET_REG_BITS(regval,MAC_TCR_TE_POS,
+								  MAC_TCR_TE_LEN, 1);
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_TCR));
+
+}
+
 
 static void mac_rdma_config_sarc(struct bxroce_dev *dev)
 {
@@ -1584,7 +1596,7 @@ static void  mac_rdma_config_pr_on(struct bxroce_dev *dev)
 		regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_PFR));
 		regval = MAC_SET_REG_BITS(regval,MAC_PFR_PR_POS,
 								  MAC_PFR_PR_LEN,1);
-		writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_TCR));
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_PFR));
 
 }
 
@@ -1601,7 +1613,7 @@ static void  mac_rdma_config_pcf_on(struct bxroce_dev *dev)
 		regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_PFR));
 		regval = MAC_SET_REG_BITS(regval,MAC_PFR_PCF_POS,
 								  MAC_PFR_PCF_LEN,2);
-		writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_TCR));
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_PFR));
 }
 
 static void mac_rdma_config_ra_on(struct bxroce_dev *dev)
@@ -1612,7 +1624,7 @@ static void mac_rdma_config_ra_on(struct bxroce_dev *dev)
 		regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_PFR));
 		regval = MAC_SET_REG_BITS(regval,MAC_PFR_RA_POS,
 								  MAC_PFR_RA_LEN,1);
-		writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_TCR));
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_PFR));
 }
 
 #define MTL_RQDCM0R_Q0DDMACH_POS		7
@@ -1828,8 +1840,36 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	BXROCE_PR("start mac channel init \n");
 	//mac_mpb_flush_tx_queues(dev);
 	//mac_mpb_config_osp_mode(dev);
-	
+	//flush tx queue
 	mac_mpb_flush_tx_queues(dev);
+
+
+	/***************MAC RELATED REG SETTING*********************/
+	//mac_tcr
+	 mac_rdma_config_jd_on(dev);
+	//mac_rdma_config_sarc(dev);
+	 mac_rdma_config_tx_start(dev);
+
+	//mac_rdma_config_ss(dev); //no need because now pf is 40g and 000 is 40g.
+
+	//mac_pf
+	mac_rdma_config_pr_on(dev); // start promiscuous mode
+	mac_rdma_config_pcf_on(dev);// start pass control packets
+	mac_rdma_config_ra_on(dev); // start receive all
+
+	//mtl_rq_dma_map0
+	mac_rdma_config_q0ddmach(dev);
+
+	//mtl_rq_dma_map1
+	mac_rdma_config_q5ddmach(dev);
+	mac_rdma_config_q7mdmach(dev);
+
+	//mtl_rq_dma_map2
+	mac_rdma_config_q8mdmach(dev);
+	mac_rdma_config_q9mdmach(dev);
+	mac_rdma_config_qamdmach(dev);
+	mac_rdma_config_qbmdmach(dev);
+
 
 	/*MTL RELATED REG SETTING*/
 //	mac_rdma_config_tsf_mode(dev,dev->devinfo.pdata->tx_sf_mode);
@@ -1891,31 +1931,6 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	mac_rdma_enable_tx(dev);
 	mac_rdma_enable_rx(dev);
 	//end added by lyp
-
-	/*             MAC RELATED REG SETTING                */
-	
-	//mac_tcr
-	mac_rdma_config_jd_on(dev);
-	mac_rdma_config_sarc(dev);
-	//mac_rdma_config_ss(dev); //no need because now pf is 40g and 000 is 40g.
-
-	//mac_pf
-	mac_rdma_config_pr_on(dev); // start promiscuous mode
-	mac_rdma_config_pcf_on(dev);// start pass control packets
-	mac_rdma_config_ra_on(dev); // start receive all
-
-	//mtl_rq_dma_map0
-	mac_rdma_config_q0ddmach(dev);
-
-	//mtl_rq_dma_map1
-	mac_rdma_config_q5ddmach(dev);
-	mac_rdma_config_q7mdmach(dev);
-
-	//mtl_rq_dma_map2
-	mac_rdma_config_q8mdmach(dev);
-	mac_rdma_config_q9mdmach(dev);
-	mac_rdma_config_qamdmach(dev);
-	mac_rdma_config_qbmdmach(dev);
 
 	mac_print_all_regs(rnic_pdata,0);//
 
