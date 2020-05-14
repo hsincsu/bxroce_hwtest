@@ -1667,7 +1667,7 @@ static void mac_rdma_config_q7mdmach(struct bxroce_dev *dev)
 		regval = readl(MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM1R));
 		regval = MAC_SET_REG_BITS(regval,MTL_RQDCM1R_Q7MDMACH_POS,
 								  MTL_RQDCM1R_Q7MDMACH_LEN,7);
-		printk("regval: mtl_rqdcm1r q7mdmach : 0x%x \n");
+		printk("regval: mtl_rqdcm1r q7mdmach : 0x%x \n",regval);
 		writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM1R));
 
 }
@@ -1691,7 +1691,7 @@ static void mac_rdma_config_q8mdmach(struct bxroce_dev *dev)
 		regval = readl(MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM2R));
 		regval = MAC_SET_REG_BITS(regval,MTL_RQDCM2R_Q8MDMACH_POS,
 								  MTL_RQDCM2R_Q8MDMACH_LEN,8);
-		printk("regval: mtl_rqdcm2r q8mdmach : 0x%x \n");
+		printk("regval: mtl_rqdcm2r q8mdmach : 0x%x \n",regval);
 		writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM2R));
 
 }
@@ -1704,7 +1704,7 @@ static void mac_rdma_config_q9mdmach(struct bxroce_dev *dev)
 		regval = readl(MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM2R));
 		regval = MAC_SET_REG_BITS(regval,MTL_RQDCM2R_Q9MDMACH_POS,
 								  MTL_RQDCM2R_Q9MDMACH_LEN,9);
-		printk("regval: mtl_rqdcm2r q9mdmach : 0x%x \n");
+		printk("regval: mtl_rqdcm2r q9mdmach : 0x%x \n",regval);
 		writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM2R));
 
 }
@@ -1717,7 +1717,7 @@ static void mac_rdma_config_qamdmach(struct bxroce_dev *dev)
 		regval = readl(MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM2R));
 		regval = MAC_SET_REG_BITS(regval,MTL_RQDCM2R_QaMDMACH_POS,
 								  MTL_RQDCM2R_QaMDMACH_LEN,0xa);
-		printk("regval: mtl_rqdcm2r qamdmach : 0x%x \n");
+		printk("regval: mtl_rqdcm2r qamdmach : 0x%x \n",regval);
 		writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM2R));
 
 }
@@ -1730,7 +1730,7 @@ static void mac_rdma_config_qbmdmach(struct bxroce_dev *dev)
 		regval = readl(MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM2R));
 		regval = MAC_SET_REG_BITS(regval,MTL_RQDCM2R_QbMDMACH_POS,
 								  MTL_RQDCM2R_QbMDMACH_LEN,0xb);
-		printk("regval: mtl_rqdcm2r qbmdmach : 0x%x \n");
+		printk("regval: mtl_rqdcm2r qbmdmach : 0x%x \n",regval);
 		writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM2R));
 
 }
