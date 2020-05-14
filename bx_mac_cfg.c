@@ -1363,7 +1363,7 @@ void mac_print_all_regs(struct rnic_pdata*rnic_pdata,int mac_id)
         {
             data = mac_reg_read(rnic_pdata,mac_id,addr+0x80*i);
             if(data != 0)
-                printk("\tRNIC: mac %0d reg addr=%0x (i=%d) \t data=%0x\n",mac_id,addr,i,data);        
+                printk("\tRNIC: mac %0d reg addr=%0x (i=%d) \t data=%0x\n",mac_id,addr + 0x80 * i,i,data);        
         }
     }
 
@@ -1374,7 +1374,7 @@ void mac_print_all_regs(struct rnic_pdata*rnic_pdata,int mac_id)
         {
             data = mac_reg_read(rnic_pdata,mac_id,addr+0x80*i);
             if(data != 0)
-                printk("\tRNIC: mac %0d reg addr=%0x (i=%d) \t data=%0x\n",mac_id,addr,i,data);        
+                printk("\tRNIC: mac %0d reg addr=%0x (i=%d) \t data=%0x\n",mac_id,addr + 0x80 * i,i,data);        
         }
     }
 
@@ -1393,7 +1393,7 @@ void mac_print_all_regs(struct rnic_pdata*rnic_pdata,int mac_id)
         {
             data = mac_reg_read(rnic_pdata,mac_id,addr+0x80*i);
             if(data != 0)
-                printk("\tRNIC: mac %0d reg addr=%0x (i=%d) \t data=%0x\n",mac_id,addr,i,data);        
+                printk("\tRNIC: mac %0d reg addr=%0x (i=%d) \t data=%0x\n",mac_id,addr + 0x80 * i,i,data);        
         }
     }
 
