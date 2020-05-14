@@ -1521,7 +1521,8 @@ static void mac_rdma_enable_tx(struct bxroce_dev *dev)
 	
 	  j = RDMA_CHANNEL;
 		
-	  regval |= (0x02 << (j << 1));  
+	  regval |= (0x02 << (j << 1)); 
+	  printk("RQEC: regval 0x%x\n",regval);
 	  writel(regval, devinfo->mac_base + MAC_RQEC);
 	  
  
