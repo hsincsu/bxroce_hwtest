@@ -315,7 +315,7 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
     send_len    = 0;
 
 
-	testnumber = 2048;
+	testnumber = 1000;
 	printk("------------------CM_RANDOME_TEST START--------------- \n");
 	while (testnumber-- )
 	{
