@@ -1298,7 +1298,7 @@ void mac_print_all_regs(struct rnic_pdata*rnic_pdata,int mac_id)
             printk("\tRNIC: mac %0d reg addr=%0x \t data=%0x\n",mac_id,addr,data);
     }
 
-    for(addr=0x140;addr<0x140;addr=addr+0x4)
+    for(addr=0x140;addr<0x144;addr=addr+0x4) //added by hs
     {
         data = mac_reg_read(rnic_pdata,mac_id,addr);
         if(data != 0)
