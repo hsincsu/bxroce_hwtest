@@ -1547,6 +1547,176 @@ static void mac_rdma_config_q2tcmap(struct bxroce_dev *dev)
 
 }
 
+#define MAC_TCR_JD_POS		16
+#define MAC_TCR_JD_LEN		1
+#define MAC_TCR_SARC_POS	20
+#define MAC_TCR_SARC_LEN	3
+
+static void mac_rdma_config_jd_on(struct bxroce_dev *dev)
+{
+		struct bx_dev_info *devinfo = &dev->devinfo;
+		u32 regval = 0;
+
+		regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_TCR));
+		regval = MAC_SET_REG_BITS(regval,MAC_TCR_JD_POS,
+								  MAC_TCR_JD_LEN,1);
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_TCR));
+
+}
+
+
+static void mac_rdma_config_sarc(struct bxroce_dev *dev)
+{
+		struct bx_dev_info *devinfo = &dev->devinfo;
+		u32 regval = 0;
+
+		regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_TCR));
+		regval = MAC_SET_REG_BITS(regval,MAC_TCR_SARC_POS,
+								  MAC_TCR_SARC_LEN,1);
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_TCR));
+}
+
+static void  mac_rdma_config_pr_on(struct bxroce_dev *dev)
+{
+		struct bx_dev_info *devinfo = &dev->devinfo;
+		u32 regval = 0;
+
+		regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_PFR));
+		regval = MAC_SET_REG_BITS(regval,MAC_PFR_PR_POS,
+								  MAC_PFR_PR_LEN,1);
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_TCR));
+
+}
+
+#define MAC_PFR_PCF_POS		6
+#define MAC_PFR_PCF_LEN		2
+#define MAC_PFR_RA_POS		31
+#define MAC_PFR_RA_LEN		1
+
+static void  mac_rdma_config_pcf_on(struct bxroce_dev *dev)
+{
+		struct bx_dev_info *devinfo = &dev->devinfo;
+		u32 regval = 0;
+
+		regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_PFR));
+		regval = MAC_SET_REG_BITS(regval,MAC_PFR_PCF_POS,
+								  MAC_PFR_PCF_LEN,2);
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_TCR));
+}
+
+static void mac_rdma_config_ra_on(struct bxroce_dev *dev)
+{
+		struct bx_dev_info *devinfo = &dev->devinfo;
+		u32 regval = 0;
+
+		regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_PFR));
+		regval = MAC_SET_REG_BITS(regval,MAC_PFR_RA_POS,
+								  MAC_PFR_RA_LEN,1);
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_TCR));
+}
+
+#define MTL_RQDCM0R_Q0DDMACH_POS		7
+#define MTL_RQDCM0R_Q0DDMACH_LEN		1
+
+
+static void mac_rdma_config_q0ddmach(struct bxroce_dev *dev)
+{
+		struct bx_dev_info *devinfo = &dev->devinfo;
+		u32 regval = 0;
+
+		regval = readl(MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM0R));
+		regval = MAC_SET_REG_BITS(regval,MTL_RQDCM0R_Q0DDMACH_POS,
+								  MTL_RQDCM0R_Q0DDMACH_LEN,1);
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM0R));
+}
+
+#define MTL_RQDCM1R						0x1034
+#define MTL_RQDCM1R_Q5DDMACH_POS		15
+#define MTL_RQDCM1R_Q5DDMACH_LEN		1
+#define MTL_RQDCM1R_Q7MDMACH_POS		24
+#define MTL_RQDCM1R_Q7MDMACH_LEN		7
+
+static void mac_rdma_config_q5ddmach(struct bxroce_dev *dev)
+{
+		struct bx_dev_info *devinfo = &dev->devinfo;
+		u32 regval = 0;
+
+		regval = readl(MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM1R));
+		regval = MAC_SET_REG_BITS(regval,MTL_RQDCM1R_Q5DDMACH_POS,
+								  MTL_RQDCM1R_Q5DDMACH_LEN,1);
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM1R));
+}
+
+static void mac_rdma_config_q7mdmach(struct bxroce_dev *dev)
+{
+		struct bx_dev_info *devinfo = &dev->devinfo;
+		u32 regval = 0;
+
+		regval = readl(MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM1R));
+		regval = MAC_SET_REG_BITS(regval,MTL_RQDCM1R_Q7MDMACH_POS,
+								  MTL_RQDCM1R_Q7MDMACH_LEN,7);
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM1R));
+
+}
+
+#define MTL_RQDCM2R						0x1038
+#define MTL_RQDCM2R_Q8MDMACH_POS		0
+#define MTL_RQDCM2R_Q8MDMACH_LEN		7
+#define MTL_RQDCM2R_Q9MDMACH_POS		8
+#define MTL_RQDCM2R_Q9MDMACH_LEN		7
+#define MTL_RQDCM2R_QaMDMACH_POS		16
+#define MTL_RQDCM2R_QaMDMACH_LEN		7
+#define MTL_RQDCM2R_QbMDMACH_POS		16
+#define MTL_RQDCM2R_QbMDMACH_LEN		7
+
+
+static void mac_rdma_config_q8mdmach(struct bxroce_dev *dev)
+{
+		struct bx_dev_info *devinfo = &dev->devinfo;
+		u32 regval = 0;
+
+		regval = readl(MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM2R));
+		regval = MAC_SET_REG_BITS(regval,MTL_RQDCM2R_Q8MDMACH_POS,
+								  MTL_RQDCM2R_Q8MDMACH_LEN,8);
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM2R));
+
+}
+
+static void mac_rdma_config_q9mdmach(struct bxroce_dev *dev)
+{
+		struct bx_dev_info *devinfo = &dev->devinfo;
+		u32 regval = 0;
+
+		regval = readl(MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM2R));
+		regval = MAC_SET_REG_BITS(regval,MTL_RQDCM2R_Q9MDMACH_POS,
+								  MTL_RQDCM2R_Q9MDMACH_LEN,9);
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM2R));
+
+}
+
+static void mac_rdma_config_qamdmach(struct bxroce_dev *dev)
+{
+		struct bx_dev_info *devinfo = &dev->devinfo;
+		u32 regval = 0;
+
+		regval = readl(MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM2R));
+		regval = MAC_SET_REG_BITS(regval,MTL_RQDCM2R_QaMDMACH_POS,
+								  MTL_RQDCM2R_QaMDMACH_LEN,0xa);
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM2R));
+
+}
+
+static void mac_rdma_config_qbmdmach(struct bxroce_dev *dev)
+{
+		struct bx_dev_info *devinfo = &dev->devinfo;
+		u32 regval = 0;
+
+		regval = readl(MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM2R));
+		regval = MAC_SET_REG_BITS(regval,MTL_RQDCM2R_QbMDMACH_POS,
+								  MTL_RQDCM2R_QbMDMACH_LEN,0xb);
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM2R));
+
+}
 
 
  static void mac_rdma_print_regval(struct bxroce_dev *dev)
@@ -1721,6 +1891,31 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	mac_rdma_enable_tx(dev);
 	mac_rdma_enable_rx(dev);
 	//end added by lyp
+
+	/*             MAC RELATED REG SETTING                */
+	
+	//mac_tcr
+	mac_rdma_config_jd_on(dev);
+	mac_rdma_config_sarc(dev);
+	//mac_rdma_config_ss(dev); //no need because now pf is 40g and 000 is 40g.
+
+	//mac_pf
+	mac_rdma_config_pr_on(dev); // start promiscuous mode
+	mac_rdma_config_pcf_on(dev);// start pass control packets
+	mac_rdma_config_ra_on(dev); // start receive all
+
+	//mtl_rq_dma_map0
+	mac_rdma_config_q0ddmach(dev);
+
+	//mtl_rq_dma_map1
+	mac_rdma_config_q5ddmach(dev);
+	mac_rdma_config_q7mdmach(dev);
+
+	//mtl_rq_dma_map2
+	mac_rdma_config_q8mdmach(dev);
+	mac_rdma_config_q9mdmach(dev);
+	mac_rdma_config_qamdmach(dev);
+	mac_rdma_config_qbmdmach(dev);
 
 	mac_print_all_regs(rnic_pdata,0);//
 
