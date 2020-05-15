@@ -1899,27 +1899,49 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	 mac_rdma_config_tx_start(dev);
 	//mac_rdma_config_ss(dev); //no need because now pf is 40g and 000 is 40g.
 
+	 //just for test to find which setting of mac is important
+	 regval = 0x00000605;
+	 writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_RCR));
+
+
 	//mac_pf
-	mac_rdma_config_pr_on(dev); // start promiscuous mode
-	mac_rdma_config_pcf_on(dev);// start pass control packets
-	mac_rdma_config_ra_on(dev); // start receive all
+	//mac_rdma_config_pr_on(dev); // start promiscuous mode
+	//mac_rdma_config_pcf_on(dev);// start pass control packets
+	//mac_rdma_config_ra_on(dev); // start receive all
+
+	 //just for test to find which setting of mac is important
+	 regval = 0x80000081;
+	 writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_PFR));
 
 	//mtl_rq_dma_map0
 	mac_rdma_config_q0ddmach(dev);
+
 	//mtl_rq_dma_map1
-	mac_rdma_config_q5ddmach(dev);
-	mac_rdma_config_q7mdmach(dev);
+	//mac_rdma_config_q5ddmach(dev);
+	//mac_rdma_config_q7mdmach(dev);
+
+	regval = 0x07800504; // think channel 6 shoule be mapped to quueue 0
+	writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM1R));
+
 	//mtl_rq_dma_map2
-	mac_rdma_config_q8mdmach(dev);
-	mac_rdma_config_q9mdmach(dev);
-	mac_rdma_config_qamdmach(dev);
-	mac_rdma_config_qbmdmach(dev);
+	//mac_rdma_config_q8mdmach(dev);
+	//mac_rdma_config_q9mdmach(dev);
+	//mac_rdma_config_qamdmach(dev);
+	//mac_rdma_config_qbmdmach(dev);
+
+	regval = 0x0b0a0908;
+	writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM2R));
 
 	//mtl_tc_prty_map1
-	mac_rdma_config_pstc5(dev); // 
+	//mac_rdma_config_pstc5(dev); // 
+	regval = 0x00002000;
+	writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_TC_Prty_Map1));
 
 	//DMA_MODE
-	mac_rdma_config_intr_mode(dev);
+	//mac_rdma_config_intr_mode(dev);
+
+	regval = 0x00000000;
+	writel(regval,MAC_RDMA_MAC_REG(devinfo,DMA_MR));
 
 	//DMA_SYSBUS_MODE
 	regval = 0x0f0f08ff;
@@ -1956,6 +1978,10 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	//mac_rqpmcr1 0x164
 	regval = 0x00c02010;
 	writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_RQPMCR1));
+
+
+	regval = 0x00600000;
+	writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_VLANTR));
 
 	/***************MAC RELATED REG SETTING*********************/
 
