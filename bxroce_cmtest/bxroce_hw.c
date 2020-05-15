@@ -1311,7 +1311,7 @@ static int mac_rdma_enable_tx_flow_control(struct bxroce_dev *dev)
 	
 	 
 		 /* Set MAC flow control */
-#if 1 //added by hs	
+#if 0 //added by hs	
 		 reg = MAC_Q0TFCR+MAC_QTFCR_INC*RDMA_CHANNEL;
 		 
 		 regval = readl(devinfo->mac_base + reg);
@@ -1326,6 +1326,9 @@ static int mac_rdma_enable_tx_flow_control(struct bxroce_dev *dev)
 		 writel(regval, devinfo->mac_base + reg);
 #endif 
 			
+		  reg = MAC_Q0TFCR+MAC_QTFCR_INC*RDMA_CHANNEL;
+		  regval = 0x00800012;
+		  writel(regval,devinfo->mac_base + reg);
 	 
 		 return 0;
 }
@@ -1920,7 +1923,7 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	//mac_rdma_config_q5ddmach(dev);
 	//mac_rdma_config_q7mdmach(dev);
 
-	regval = 0x07800504; // think channel 6 shoule be mapped to quueue 0
+	regval = 0x07068004; // think channel 6 shoule be mapped to quueue 0
 	writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_RQDCM1R));
 
 	//mtl_rq_dma_map2
@@ -1956,10 +1959,10 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	writel(regval,MAC_RDMA_MAC_REG(devinfo,DMA_RECR));
 
 	//MAC_VLAN_TAG_CTRL
-	regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_VLANTCR));
-	regval = MAC_SET_REG_BITS(regval,20,1,1);
-	printk("mac vlan tag ctrl :regval : 0x%x \n",regval);
-	writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_VLANTCR));
+	//regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_VLANTCR));
+	//regval = MAC_SET_REG_BITS(regval,20,1,1);
+	//printk("mac vlan tag ctrl :regval : 0x%x \n",regval);
+	//writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_VLANTCR));
 
 	//MAC_PRI5_TX_FLOW_CTRL
 	//regval = 0x00800012;
