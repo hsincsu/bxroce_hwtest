@@ -999,10 +999,11 @@ static void mac_rdma_enable_dma_interrupts(struct bxroce_dev *dev)
      dma_ch_ier = MAC_SET_REG_BITS(dma_ch_ier,
                          DMA_CH_IER_AIE_POS,
                     DMA_CH_IER_AIE_LEN, 1);
-     dma_ch_ier = MAC_SET_REG_BITS(dma_ch_ier,
+#if 0
+	 dma_ch_ier = MAC_SET_REG_BITS(dma_ch_ier,
                          DMA_CH_IER_FBEE_POS,
                     DMA_CH_IER_FBEE_LEN, 1);
-
+#endif
         
             /* Enable the following Tx interrupts
              *   TIE  - Transmit Interrupt Enable (unless using
