@@ -314,6 +314,14 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
     recv_cnt_1  = 0;
     send_len    = 0;
 
+	printk("cm init config\n")
+	regval = bxroce_mpb_reg_read(base_addr,CM_CFG,0x0);
+	printk("cmcfg: offset 0x0: 0x%x \n",regval);//
+	regval = bxroce_mpb_reg_read(base_addr,CM_CFG,0x1);
+	printk("cmcfg: offset 0x1: 0x%x \n",regval);//
+	regval = bxroce_mpb_reg_read(base_addr,CM_CFG,0x2);
+	printk("cmcfg: offset 0x2: 0x%x \n",regval);//
+
 
 	testnumber = 1000;
 	printk("------------------CM_RANDOME_TEST START--------------- \n");
