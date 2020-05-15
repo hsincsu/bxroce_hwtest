@@ -298,6 +298,8 @@ int bxroce_cm_test_msg_recv(struct bxroce_dev *dev)
 static int bxroce_cm_test(struct bxroce_dev *dev)
 {
 	struct bx_dev_info *devinfo = &dev->devinfo;
+
+	void __iomem *base_addr;
 	unsigned long randnumber;
 	unsigned long testnumber; 
 	int status = 0;
@@ -314,7 +316,9 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
     recv_cnt_1  = 0;
     send_len    = 0;
 
-	printk("cm init config\n")
+	base_addr = dev->devinfo.base_addr;
+
+	printk("cm init config\n");
 	regval = bxroce_mpb_reg_read(base_addr,CM_CFG,0x0);
 	printk("cmcfg: offset 0x0: 0x%x \n",regval);//
 	regval = bxroce_mpb_reg_read(base_addr,CM_CFG,0x1);
