@@ -1974,8 +1974,8 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_RFCR));
 
 	//mac_rqpmcr 0x160
-	regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_RQPMCR));
-	regval = MAC_SET_REG_BITS(regval,8,24,0x080402);
+	regval = 0x08040201;//readl(MAC_RDMA_MAC_REG(devinfo,MAC_RQPMCR));
+	//regval = MAC_SET_REG_BITS(regval,8,24,0x080402);
 	writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_RQPMCR));
 
 
