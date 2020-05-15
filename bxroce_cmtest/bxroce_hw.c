@@ -1311,7 +1311,7 @@ static int mac_rdma_enable_tx_flow_control(struct bxroce_dev *dev)
 	
 	 
 		 /* Set MAC flow control */
-#if 0 //added by hs	
+#if 1 //added by hs	
 		 reg = MAC_Q0TFCR+MAC_QTFCR_INC*RDMA_CHANNEL;
 		 
 		 regval = readl(devinfo->mac_base + reg);
@@ -1940,8 +1940,8 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_VLANTCR));
 
 	//MAC_PRI5_TX_FLOW_CTRL
-	regval = 0x00800012;
-	writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_PRI5_TX_FLOW_CTRL));
+	//regval = 0x00800012;
+	//writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_PRI5_TX_FLOW_CTRL));
 
 	// MAC_RFCR
 	regval = 0x00000101;
@@ -1956,6 +1956,10 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	//mac_rqpmcr1 0x164
 	regval = 0x00c02010;
 	writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_RQPMCR1));
+
+	/***************MAC RELATED REG SETTING*********************/
+
+
 
 
 	/*MTL RELATED REG SETTING*/
