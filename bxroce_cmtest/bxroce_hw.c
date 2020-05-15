@@ -1735,6 +1735,40 @@ static void mac_rdma_config_qbmdmach(struct bxroce_dev *dev)
 
 }
 
+#define MTL_TC_Prty_Map1				0x1044
+#define MTL_TC_Prty_Map1_PSTC5_POS		8
+#define MTL_TC_Prty_Map1_PSTC5_LEN		8
+
+static void mac_rdma_config_pstc5(struct bxroce_dev *dev)
+{
+		struct bx_dev_info *devinfo = &dev->devinfo;
+		u32 regval = 0;
+
+		regval = readl(MAC_RDMA_MAC_REG(devinfo,MTL_TC_Prty_Map1));
+		regval = MAC_SET_REG_BITS(regval,MTL_TC_Prty_Map1_PSTC5_POS,
+								  MTL_TC_Prty_Map1_PSTC5_LEN,0x20);
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_TC_Prty_Map1));
+
+}
+
+#define DMA_MR_INTR_MOD_POS			12
+#define DMA_MR_INTR_MODE_LEN		2
+
+static void mac_rdma_config_intr_mode(struct bxroce_dev *dev)
+{
+		struct bx_dev_info *devinfo = &dev->devinfo;
+		u32 regval = 0;
+
+		regval = readl(MAC_RDMA_MAC_REG(devinfo,DMA_MR));
+		regval = MAC_SET_REG_BITS(regval,DMA_MR_INTR_MOD_POS,
+								  DMA_MR_INTR_MODE_LEN,2);
+
+		writel(regval,MAC_RDMA_MAC_REG(devinfo,DMA_MR));
+}
+
+
+
+
 
  static void mac_rdma_print_regval(struct bxroce_dev *dev)
  {
@@ -1837,11 +1871,20 @@ static void mac_rdma_config_qbmdmach(struct bxroce_dev *dev)
 	  BXROCE_PR("----------------------------MAC RDMA PRINTF INFO END-------------- \n");
  }
 
+#define DMA_TECR				0x3040
+#define DMA_RECR				0x3044
+#define MAC_VLANTCR				0x50
+#define MAC_PRI5_TX_FLOW_CTRL	0x84
+#define MAC_RQPMCR				0x160
+#define MAC_RQPMCR1				0x164
 
 static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 {
 	void __iomem *base_addr;
 	struct rnic_pdata *rnic_pdata = dev->devinfo.rnic_pdata;
+	struct bx_dev_info *devinfo = &dev->devinfo;
+	u32 regval = 0;
+
 	BXROCE_PR("start mac channel init \n");
 	//mac_mpb_flush_tx_queues(dev);
 	//mac_mpb_config_osp_mode(dev);
@@ -1854,7 +1897,6 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	 mac_rdma_config_jd_on(dev);
 	//mac_rdma_config_sarc(dev);
 	 mac_rdma_config_tx_start(dev);
-
 	//mac_rdma_config_ss(dev); //no need because now pf is 40g and 000 is 40g.
 
 	//mac_pf
@@ -1864,16 +1906,56 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 
 	//mtl_rq_dma_map0
 	mac_rdma_config_q0ddmach(dev);
-
 	//mtl_rq_dma_map1
 	mac_rdma_config_q5ddmach(dev);
 	mac_rdma_config_q7mdmach(dev);
-
 	//mtl_rq_dma_map2
 	mac_rdma_config_q8mdmach(dev);
 	mac_rdma_config_q9mdmach(dev);
 	mac_rdma_config_qamdmach(dev);
 	mac_rdma_config_qbmdmach(dev);
+
+	//mtl_tc_prty_map1
+	mac_rdma_config_pstc5(dev); // 
+
+	//DMA_MODE
+	mac_rdma_config_intr_mode(dev);
+
+	//DMA_SYSBUS_MODE
+	regval = 0x0f0f08ff;
+	writel(regval,MAC_RDMA_MAC_REG(devinfo,DMA_SBMR));
+
+	//DMA_TX_EDMA_CONTROL
+	regval = 0x00000001;
+	writel(regval,MAC_RDMA_MAC_REG(devinfo,DMA_TECR));
+
+	//DMA_RX_EDMA_CONTROL
+	regval = 0x00000001;
+	writel(regval,MAC_RDMA_MAC_REG(devinfo,DMA_RECR));
+
+	//MAC_VLAN_TAG_CTRL
+	regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_VLANTCR));
+	regval = MAC_SET_REG_BITS(regval,20,1,1);
+	printk("mac vlan tag ctrl :regval : 0x%x \n",regval);
+	writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_VLANTCR));
+
+	//MAC_PRI5_TX_FLOW_CTRL
+	regval = 0x00800012;
+	writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_PRI5_TX_FLOW_CTRL));
+
+	// MAC_RFCR
+	regval = 0x00000101;
+	writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_RFCR));
+
+	//mac_rqpmcr 0x160
+	regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_RQPMCR));
+	regval = MAC_SET_REG_BITS(regval,8,24,0x080402);
+	writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_RQPMCR));
+
+
+	//mac_rqpmcr1 0x164
+	regval = 0x00c02010;
+	writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_RQPMCR1));
 
 
 	/*MTL RELATED REG SETTING*/
