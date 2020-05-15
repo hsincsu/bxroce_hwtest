@@ -1545,7 +1545,7 @@ static void mac_rdma_config_q2tcmap(struct bxroce_dev *dev)
 
 		regval = readl(MAC_RDMA_MTL_REG(devinfo,RDMA_CHANNEL,MTL_Q_TQOMR));
 		regval = MAC_SET_REG_BITS(regval, MTL_Q_TQOMR_Q2TCMAP_POS,
-								  MTL_Q_TQOMR_Q2TCMAP_LEN,6);
+								  MTL_Q_TQOMR_Q2TCMAP_LEN,RDMA_CHANNEL);
 		writel(regval,MAC_RDMA_MTL_REG(devinfo,RDMA_CHANNEL,MTL_Q_TQOMR));
 
 }
