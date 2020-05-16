@@ -3181,6 +3181,8 @@ static int mac_hw_init(struct mac_pdata *pdata)
 
     /* Initialize DMA related features */
     mac_config_dma_bus(pdata);
+		regval = 0x0f0f08ff;
+		writel(regval, pdata->mac_regs + 0x3004); // config dma_sysbugs_mode
     mac_config_osp_mode(pdata);
     mac_config_pblx8(pdata);
     mac_config_tx_pbl_val(pdata);
@@ -3196,9 +3198,7 @@ static int mac_hw_init(struct mac_pdata *pdata)
     mac_enable_dma_interrupts(pdata);
 
 #if 1 //added by hs
-		regval = 0x0f0f08ff;
-		writel(regval, pdata->mac_regs + 0x3004); // config dma_sysbugs_mode
-
+		
 		regval = readl(pdata->mac_regs + 0x3004);
 		printk("rnic 0x3004 regval: 0x%x \n",regval);
 

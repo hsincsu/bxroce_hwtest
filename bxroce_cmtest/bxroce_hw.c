@@ -2027,7 +2027,7 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	mac_rdma_config_tx_pbl_val(dev);
 	mac_rdma_config_rx_pbl_val(dev);
 
-	//mac_rdma_config_rx_coalesce(dev); //del by hs for watchdog may not need .
+	mac_rdma_config_rx_coalesce(dev); //del by hs for watchdog may not need .
 	mac_rdma_config_rx_buffer_size(dev);
 	
 	mac_rdma_config_tso_mode(dev); //may not need

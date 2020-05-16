@@ -218,6 +218,8 @@ int bxroce_cm_test_msg_recv(struct bxroce_dev *dev)
 
 	rdata = bxroce_mpb_reg_read(base_addr,CM_CFG,CMERRINTSTA);
 
+
+
 	printk("cm_test_msg_recv: 0x%x \n",rdata);
 	if (rdma_get_bits(rdata, 0, 0) == 1)
 	{
@@ -329,7 +331,8 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
 	printk("cmcfg: offset 0x2: 0x%x \n",regval);//
 
 
-	testnumber = 1000;
+	
+	testnumber = 100;
 	printk("------------------CM_RANDOME_TEST START--------------- \n");
 	while (testnumber-- )
 	{
@@ -344,7 +347,7 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
 			if(status == -1)
 					 return status;
 		}
-
+		msleep(1000);
 	}
 	printk("------------------CM_RANDOME_TEST END--------------- \n");
 
@@ -379,6 +382,12 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
 		regval = readl(MAC_RDMA_DMA_REG(devinfo,DMA_CH_CA_RBHR));
 		BXROCE_PR("DMA_CH_CA_RBHR: 0x%x \n",regval);
 	
+		regval = readl(MAC_RDMA_DMA_REG(devinfo,DMA_DSR0));
+		BXROCE_PR("DMA_DSRO: 0x%x \n",regval);
+
+		regval = readl(MAC_RDMA_DMA_REG(devinfo,DMA_DSR1));
+		BXROCE_PR("DMA_DSR1: 0x%x \n",regval);
+
 		printk("--------------------DMA_CH_CA  printing info end --------------------------\n");
 
 
