@@ -211,6 +211,8 @@ int bxroce_cm_test_msg_recv(struct bxroce_dev *dev)
 
 	void __iomem *base_addr;
 	int status = 0;
+	struct bx_dev_info devinfo = & dev->devinfo;
+	u32 regval = 0;
 	printk("------------CM MSG RECV START----------- \n");
 
 	base_addr = dev->devinfo.base_addr;
