@@ -863,7 +863,7 @@ static void mac_rdma_config_rx_buffer_size(struct bxroce_dev *dev)
 
 	regval = MAC_SET_REG_BITS(regval, DMA_CH_RCR_RBSZ_POS,
                          DMA_CH_RCR_RBSZ_LEN,
-						0x3ff);
+						0x3ff0);
 
     writel(regval, MAC_RDMA_DMA_REG(devinfo, DMA_CH_RCR));
     
