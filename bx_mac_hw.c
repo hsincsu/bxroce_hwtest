@@ -1601,7 +1601,7 @@ static void mac_config_mtl_mode(struct mac_pdata *pdata)
 {
     unsigned int i;
     u32 regval;
-     unsigned int tc_cnt =7; //added by lyp to support vf rate setting
+     //unsigned int tc_cnt =7; //added by lyp to support vf rate setting
 
     RNIC_TRACE_PRINT();
 
@@ -1612,7 +1612,7 @@ static void mac_config_mtl_mode(struct mac_pdata *pdata)
     writel(regval, pdata->mac_regs + MTL_OMR);
 
     /* Set Tx traffic classes to use WRR algorithm with equal weights */
-    for (i = 0; i < tc_cnt/*pdata->hw_feat.tc_cnt*/; i++) {
+    for (i = 0; i < pdata->hw_feat.tc_cnt; i++) {
         regval = readl(MAC_MTL_REG(pdata, i, MTL_TC_ETSCR));
         regval = MAC_SET_REG_BITS(regval, MTL_TC_ETSCR_TSA_POS,
                          MTL_TC_ETSCR_TSA_LEN, MTL_TSA_ETS);
@@ -1620,15 +1620,9 @@ static void mac_config_mtl_mode(struct mac_pdata *pdata)
 
         regval = readl(MAC_MTL_REG(pdata, i, MTL_TC_QWR));
 
-
-		//modified by hs to support rdma
-#if 0
         regval = MAC_SET_REG_BITS(regval, MTL_TC_QWR_QW_POS,
                          MTL_TC_QWR_QW_LEN, 1);
-#endif
-		regval = MAC_SET_REG_BITS(regval, MTL_TC_QWR_QW_POS,
-								 MTL_TC_QWR_QW_LEN, 0x64);
-		
+	
 		writel(regval, MAC_MTL_REG(pdata, i, MTL_TC_QWR));
     }
 
@@ -3253,6 +3247,10 @@ static int mac_hw_init(struct mac_pdata *pdata)
         regval = readl(pdata->mac_regs + MAC_RCR);
         regval = MAC_SET_REG_BITS(regval,10,1,1);
         writel(regval, pdata->mac_regs + MAC_RCR);
+
+		regval = readl(pdata->mac_regs + MAC_PFR); // disable vlan filtering
+		regval = MAC_SET_REG_BITS(regval,16,1,0);
+		writel(regval, pdata->mac_regs + MAC_PFR);
 
 		regval = readl(pdata->mac_regs + MAC_TCR); // CONFIG JD ON
 		regval = MAC_SET_REG_BITS(regval,16,1,1);
