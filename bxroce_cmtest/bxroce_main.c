@@ -126,7 +126,8 @@ int bxroce_cm_test_msg_send(struct bxroce_dev *dev)
 
 	void __iomem *base_addr;
 	int status = 0;
-
+	struct bx_dev_info devinfo = & dev->devinfo;
+	u32 regval = 0;
 	printk("------------CM MSG SEND START----------- \n");
 
 	base_addr = dev->devinfo.base_addr;
@@ -185,6 +186,11 @@ int bxroce_cm_test_msg_send(struct bxroce_dev *dev)
 		bxroce_mpb_reg_write(base_addr,CM_CFG,addr,wdata);
 
 		printk("INFO: port_%0d cm msg send:\tcm_msg_4byte_len=%08X.\n",port_id,cm_msg_4byte_len);
+		regval = readl(MAC_RDMA_DMA_REG(devinfo,DMA_DSR0));
+				 BXROCE_PR("SEND DMA_DSRO: 0x%x \n",regval);
+
+		regval = readl(MAC_RDMA_DMA_REG(devinfo,DMA_DSR1));
+		BXROCE_PR("SEND DMA_DSR1: 0x%x \n",regval);
 
 		
 
