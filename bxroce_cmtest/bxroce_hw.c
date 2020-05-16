@@ -1895,9 +1895,9 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 
 	/***************MAC RELATED REG SETTING*********************/
 	//mac_tcr
-	 mac_rdma_config_jd_on(dev);
+	 //mac_rdma_config_jd_on(dev);
 	//mac_rdma_config_sarc(dev);
-	 mac_rdma_config_tx_start(dev);
+	// mac_rdma_config_tx_start(dev);
 	//mac_rdma_config_ss(dev); //no need because now pf is 40g and 000 is 40g.
 
 	 //just for test to find which setting of mac is important
@@ -1906,9 +1906,9 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 
 
 	//mac_pf
-	mac_rdma_config_pr_on(dev); // start promiscuous mode
-	mac_rdma_config_pcf_on(dev);// start pass control packets
-	mac_rdma_config_ra_on(dev); // start receive all
+	//mac_rdma_config_pr_on(dev); // start promiscuous mode
+	//mac_rdma_config_pcf_on(dev);// start pass control packets
+	//mac_rdma_config_ra_on(dev); // start receive all
 
 	 //just for test to find which setting of mac is important
 	 //regval = 0x80000081;
@@ -1935,26 +1935,26 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 
 	//mtl_tc_prty_map1
 	//mac_rdma_config_pstc5(dev); // 
-	regval = 0x00002000;
-	writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_TC_Prty_Map1));
+	//regval = 0x00002000;
+	//writel(regval,MAC_RDMA_MAC_REG(devinfo,MTL_TC_Prty_Map1));
 
 	//DMA_MODE
 	//mac_rdma_config_intr_mode(dev);
 
-	regval = 0x00000000;
-	writel(regval,MAC_RDMA_MAC_REG(devinfo,DMA_MR));
+	//regval = 0x00000000;
+	//writel(regval,MAC_RDMA_MAC_REG(devinfo,DMA_MR));
 
 	//DMA_SYSBUS_MODE
-	regval = 0x0f0f08ff;
-	writel(regval,MAC_RDMA_MAC_REG(devinfo,DMA_SBMR));
+	//regval = 0x0f0f08ff;
+	//writel(regval,MAC_RDMA_MAC_REG(devinfo,DMA_SBMR));
 
 	//DMA_TX_EDMA_CONTROL
-	regval = 0x00000001;
-	writel(regval,MAC_RDMA_MAC_REG(devinfo,DMA_TECR));
+	//regval = 0x00000001;
+	//writel(regval,MAC_RDMA_MAC_REG(devinfo,DMA_TECR));
 
 	//DMA_RX_EDMA_CONTROL
-	regval = 0x00000001;
-	writel(regval,MAC_RDMA_MAC_REG(devinfo,DMA_RECR));
+	//regval = 0x00000001;
+	//writel(regval,MAC_RDMA_MAC_REG(devinfo,DMA_RECR));
 
 	//MAC_VLAN_TAG_CTRL
 	//regval = readl(MAC_RDMA_MAC_REG(devinfo,MAC_VLANTCR));
@@ -1967,8 +1967,8 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	//writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_PRI5_TX_FLOW_CTRL));
 
 	// MAC_RFCR
-	regval = 0x00000101;
-	writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_RFCR));
+	//regval = 0x00000101;
+	//writel(regval,MAC_RDMA_MAC_REG(devinfo,MAC_RFCR));
 
 	//mac_rqpmcr 0x160
 	//regval = 0x08040201;//readl(MAC_RDMA_MAC_REG(devinfo,MAC_RQPMCR));
@@ -2008,7 +2008,7 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	mac_rdma_config_flow_control_threshold(dev);
 	mac_rdma_config_rx_fep_enable(dev);
 
-	mac_rdma_config_q2tcmap(dev);
+	//mac_rdma_config_q2tcmap(dev);
 
 	//mac_rdma_config_mtl_tc_quantum_weight(dev);
 

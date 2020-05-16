@@ -3225,11 +3225,41 @@ static int mac_hw_init(struct mac_pdata *pdata)
 //	struct rnic_pdata *rnic_pdata = &pdata->rnic_pdata;
 //	pcs_loopback_cfg(rnic_pdata,0);
 	
-	u32 regval = 0;
+		u32 regval = 0;
         regval = readl(pdata->mac_regs + MAC_RCR);
         regval = MAC_SET_REG_BITS(regval,10,1,1);
         writel(regval, pdata->mac_regs + MAC_RCR);
 
+		regval = readl(pdata->mac_regs + MAC_TCR); // CONFIG JD ON
+		regval = MAC_SET_REG_BITS(regval,16,1,1);
+		writel(regval, pdata->mac_regs + MAC_TCR);
+
+		regval = readl(pdata->mac_regs + MAC_PFR); // CONFIG PR ON
+		regval = MAC_SET_REG_BITS(regval,0,1,1);
+		writel(regval, pdata->mac_regs + MAC_PFR);
+
+		regval = readl(pdata->mac_regs + MAC_PFR); // CONFIG PCF ON
+		regval = MAC_SET_REG_BITS(regval,6,2,2);
+		writel(regval, pdata->mac_regs + MAC_PFR);
+
+		regval = readl(pdata->mac_regs + MAC_PFR); // CONFIG RA ON
+		regval = MAC_SET_REG_BITS(regval,31,1,1);
+		writel(regval, pdata->mac_regs + MAC_PFR);
+
+		regval = 0x00002000;
+		writel(regval, pdata->mac_regs + 0x1044); // config mtl_tc_prty_map1
+
+		regval = 0x0f0f08ff;
+		writel(regval, pdata->mac_regs + 0x3004); // config dma_sysbugs_mode
+
+		regval = 0x00000001;
+		writel(regval, pdata->mac_regs + 0x3040); // config dma_tx_edma_control
+
+		regval = 0x00000001;
+		writel(regval, pdata->mac_regs + 0x3044); // config dma_rx_edma_control
+
+		regval = 0x00000101;
+		writel(regval, pdata->mac_regs + 0x0090); // config mac_rfcr;
 
 #endif
 
