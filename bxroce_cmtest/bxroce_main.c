@@ -351,6 +351,9 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
 	//clear the msg sram and clear the flit
 
 	printk("--------------------DMA_CH_CA   printing info start --------------------------\n");
+		regval = bxroce_mpb_reg_read(base_addr,CM_CFG,CM_REG_ADDR_MSG_SEND_SRAM_STATE)
+		BXROCE_PR("CM_REG_ADDR_MSG_SEND_SRAM_STATE: 0x%x \n",regval);
+
 		regval = readl(MAC_RDMA_DMA_REG(devinfo,DMA_CH_CA_TDLR));
 		BXROCE_PR("DMA_CH_CA_TDLR: 0x%x \n",regval);
 

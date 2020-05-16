@@ -3170,7 +3170,7 @@ static int mac_hw_init(struct mac_pdata *pdata)
 {
     struct mac_desc_ops *desc_ops = &pdata->desc_ops;
     int ret;
-    
+    u32 regval = 0;//added by hs
     RNIC_TRACE_PRINT();
 
     
@@ -3195,6 +3195,21 @@ static int mac_hw_init(struct mac_pdata *pdata)
     desc_ops->rx_desc_init(pdata);
     mac_enable_dma_interrupts(pdata);
 
+#if 1 //added by hs
+		regval = 0x0f0f08ff;
+		writel(regval, pdata->mac_regs + 0x3004); // config dma_sysbugs_mode
+
+		regval = readl(pdata->mac_regs + 0x3004);
+		printk("rnic 0x3004 regval: 0x%x \n",regval);
+
+		regval = 0x00000001;
+		writel(regval, pdata->mac_regs + 0x3040); // config dma_tx_edma_control
+
+		regval = 0x00000001;
+		writel(regval, pdata->mac_regs + 0x3044); // config dma_rx_edma_control
+
+#endif 
+
     /* Initialize MTL related features */
     mac_config_mtl_mode(pdata);
     mac_config_queue_mapping(pdata);
@@ -3208,6 +3223,16 @@ static int mac_hw_init(struct mac_pdata *pdata)
     mac_config_rx_fep_enable(pdata);
     mac_config_rx_fup_enable(pdata);
     mac_enable_mtl_interrupts(pdata);
+
+#if 1 //added by hs
+	regval = 0x00002000;
+	writel(regval, pdata->mac_regs + 0x1044); // config mtl_tc_prty_map1
+
+
+	regval = 0x00000101;
+	writel(regval, pdata->mac_regs + 0x0090); // config mac_rfcr;
+
+#endif
 
     /* Initialize MAC related features */
     mac_config_mac_address(pdata);
@@ -3225,7 +3250,6 @@ static int mac_hw_init(struct mac_pdata *pdata)
 //	struct rnic_pdata *rnic_pdata = &pdata->rnic_pdata;
 //	pcs_loopback_cfg(rnic_pdata,0);
 	
-		u32 regval = 0;
         regval = readl(pdata->mac_regs + MAC_RCR);
         regval = MAC_SET_REG_BITS(regval,10,1,1);
         writel(regval, pdata->mac_regs + MAC_RCR);
@@ -3245,21 +3269,6 @@ static int mac_hw_init(struct mac_pdata *pdata)
 		regval = readl(pdata->mac_regs + MAC_PFR); // CONFIG RA ON
 		regval = MAC_SET_REG_BITS(regval,31,1,1);
 		writel(regval, pdata->mac_regs + MAC_PFR);
-
-		regval = 0x00002000;
-		writel(regval, pdata->mac_regs + 0x1044); // config mtl_tc_prty_map1
-
-		regval = 0x0f0f08ff;
-		writel(regval, pdata->mac_regs + 0x3004); // config dma_sysbugs_mode
-
-		regval = 0x00000001;
-		writel(regval, pdata->mac_regs + 0x3040); // config dma_tx_edma_control
-
-		regval = 0x00000001;
-		writel(regval, pdata->mac_regs + 0x3044); // config dma_rx_edma_control
-
-		regval = 0x00000101;
-		writel(regval, pdata->mac_regs + 0x0090); // config mac_rfcr;
 
 #endif
 
