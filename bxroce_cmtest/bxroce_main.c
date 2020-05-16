@@ -408,6 +408,8 @@ static struct bxroce_dev *bx_add(struct bx_dev_info *dev_info)
 	if(status)
 		goto err_init_hw;
 
+	wmb(); // make sure write reg is over;
+
 	status = bxroce_cm_test(dev);
 	if(status)
 		goto err_cm_test;
