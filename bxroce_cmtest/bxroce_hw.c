@@ -918,8 +918,8 @@ static void mac_rdma_tx_desc_init(struct bxroce_dev *dev,int mac_id)
         mpb_base_addr_h = RNIC_BASE_ADDR_MPB_DATA_S_1_H;  
 
     /* Update the total number of Tx descriptors */
-    //writel(devinfo->pdata->tx_desc_count - 1, MAC_RDMA_DMA_REG(devinfo, DMA_CH_TDRLR)); //del by hs
-	writel(0x3ff, MAC_RDMA_DMA_REG(devinfo, DMA_CH_TDRLR));
+    writel(devinfo->pdata->tx_desc_count - 1, MAC_RDMA_DMA_REG(devinfo, DMA_CH_TDRLR)); //del by hs
+	//writel(0x3ff, MAC_RDMA_DMA_REG(devinfo, DMA_CH_TDRLR));
 
     /* Update the starting address of descriptor ring */
     writel(0x00000000+mpb_base_addr_h,MAC_RDMA_DMA_REG(devinfo, DMA_CH_TDLR_HI));
@@ -948,8 +948,8 @@ static void mac_rdma_rx_desc_init(struct bxroce_dev *dev,int mac_id)
         mpb_base_addr_h = RNIC_BASE_ADDR_MPB_DATA_S_1_H; 
 	
     /* Update the total number of Rx descriptors */
-    //writel(devinfo->pdata->rx_desc_count - 1, MAC_RDMA_DMA_REG(devinfo, DMA_CH_RDRLR));//del by hs
-	writel(0x3ff, MAC_RDMA_DMA_REG(devinfo, DMA_CH_RDRLR));
+    writel(devinfo->pdata->rx_desc_count - 1, MAC_RDMA_DMA_REG(devinfo, DMA_CH_RDRLR));//del by hs
+	//writel(0x3ff, MAC_RDMA_DMA_REG(devinfo, DMA_CH_RDRLR));
 
     /* Update the starting address of descriptor ring */
     
