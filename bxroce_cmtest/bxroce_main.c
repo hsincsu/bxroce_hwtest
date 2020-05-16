@@ -179,9 +179,9 @@ int bxroce_cm_test_msg_send(struct bxroce_dev *dev)
 
 		addr = CM_REG_ADDR_MSG_SRAM_OPERATE_FINISH;
 		wdata = 0;
-
+		
 		wdata = rdma_set_bits(wdata,CM_MSG_SEND_MSG_SRAM_WR_FINISH_RANGE,1);
-
+		wmb();
 		bxroce_mpb_reg_write(base_addr,CM_CFG,addr,wdata);
 
 		printk("INFO: port_%0d cm msg send:\tcm_msg_4byte_len=%08X.\n",port_id,cm_msg_4byte_len);
@@ -278,6 +278,7 @@ int bxroce_cm_test_msg_recv(struct bxroce_dev *dev)
 
 				 wdata = 0;
 				 wdata = rdma_set_bits(wdata,CM_MSG_RECEIVE_MSG_SRAM_RD_FINISH_RANGE,1);
+				 wmb();
 				 bxroce_mpb_reg_write(base_addr,CM_CFG,CM_REG_ADDR_MSG_SRAM_OPERATE_FINISH,wdata);
 				 
 				 printk("INFO: port_%0d cm msg recv:\tcm_msg_4byte_len=%08X.\n",port_id,golden_cm_msg_4byte_len);
