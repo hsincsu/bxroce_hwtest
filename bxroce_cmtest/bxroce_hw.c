@@ -330,7 +330,7 @@ static int bxroce_init_phd(struct bxroce_dev *dev)
 
 	int status;
 
-#if 0 //added by hs
+#if 1 //added by hs
 
 	status = phd_txdesc_init(dev);
 	if (status)
@@ -857,13 +857,10 @@ static void mac_rdma_config_rx_buffer_size(struct bxroce_dev *dev)
   
 
     regval = readl(MAC_RDMA_DMA_REG(devinfo, DMA_CH_RCR));
-//    regval = MAC_SET_REG_BITS(regval, DMA_CH_RCR_RBSZ_POS,
-//                         DMA_CH_RCR_RBSZ_LEN,
-//                    devinfo->pdata->rx_buf_size);
+    regval = MAC_SET_REG_BITS(regval, DMA_CH_RCR_RBSZ_POS,
+                         DMA_CH_RCR_RBSZ_LEN,
+                    devinfo->pdata->rx_buf_size);
 
-	regval = MAC_SET_REG_BITS(regval, DMA_CH_RCR_RBSZ_POS,
-						DMA_CH_RCR_RBSZ_LEN,
-					  0x3ff0);
     writel(regval, MAC_RDMA_DMA_REG(devinfo, DMA_CH_RCR));
     
 }
@@ -1146,7 +1143,7 @@ static void mac_rdma_config_tx_fifo_size(struct bxroce_dev *dev)
                 pdata->hw_feat.tx_fifo_size,
                 pdata->tx_q_count);
 #endif
-	fifo_size = 0x3f;//11; //pf is 183
+	fifo_size = 11; //pf is 183
 
 // end modified by lyp 20200328
 
@@ -1178,7 +1175,7 @@ static void mac_rdma_config_rx_fifo_size(struct bxroce_dev *dev)
                     pdata->hw_feat.rx_fifo_size,
                     pdata->rx_q_count);
 #endif
-    fifo_size = 0x3f;//11; //pf is 183
+    fifo_size = 11; //pf is 183
 
 // end modified by lyp 20200328
 
