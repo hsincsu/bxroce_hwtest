@@ -2010,7 +2010,7 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 
 	mac_rdma_config_q2tcmap(dev);
 
-	mac_rdma_config_mtl_tc_quantum_weight(dev);
+	//mac_rdma_config_mtl_tc_quantum_weight(dev);
 
 	mac_rdma_enable_mtl_interrupts(dev);  //maybe error
 
