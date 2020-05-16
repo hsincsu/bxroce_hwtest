@@ -142,6 +142,7 @@ int bxroce_cm_test_msg_send(struct bxroce_dev *dev)
 
 	rdata = bxroce_mpb_reg_read(base_addr,CM_CFG,CM_REG_ADDR_MSG_SEND_SRAM_STATE);
 
+	printk("rdata is 0x%x \n",rdata);
 	remain_flit = rdata & 0xffff;
 
 	printk("cm_msg_4byte_len is %d, cm_msg_flit_len is %d, remain_flit is %d\n",cm_msg_4byte_len,cm_msg_flit_len, remain_flit);
