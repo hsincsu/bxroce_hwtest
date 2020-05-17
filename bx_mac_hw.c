@@ -3190,11 +3190,6 @@ static int mac_hw_init(struct mac_pdata *pdata)
     mac_enable_dma_interrupts(pdata);
 
 #if 1 //added by hs
-		regval = 0x0f0f08ff;
-		writel(regval, pdata->mac_regs + 0x3004); // config dma_sysbugs_mode	
-		
-		regval = readl(pdata->mac_regs + 0x3004);
-		printk("rnic 0x3004 regval: 0x%x \n",regval);
 		
 		regval = 0x00000001;
 		writel(regval, pdata->mac_regs + 0x3040); // config dma_tx_edma_control
@@ -3291,6 +3286,13 @@ static int mac_hw_init(struct mac_pdata *pdata)
 		regval = readl(pdata->mac_regs + MAC_RFCR);
 		regval = MAC_SET_REG_BITS(regval,0,1,1);
 		writel(regval, pdata->mac_regs + MAC_RFCR);
+
+		regval = 0x0f0f08ff;
+		writel(regval, pdata->mac_regs + 0x3004); // config dma_sysbugs_mode	
+		
+		regval = readl(pdata->mac_regs + 0x3004);
+		printk("rnic 0x3004 regval: 0x%x \n",regval);
+		
 
 #endif
 
