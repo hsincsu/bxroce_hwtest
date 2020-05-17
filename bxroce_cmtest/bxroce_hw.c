@@ -279,6 +279,7 @@ static int phd_rxdesc_init(struct bxroce_dev *dev)
 
 	return 0;
 }
+
 static int phd_txdesc_init(struct bxroce_dev *dev)
 {
 	/*对Phd的发送描述符进行初始化*/
@@ -324,6 +325,19 @@ static int phd_txdesc_init(struct bxroce_dev *dev)
 
 }
 
+static int phd_context_tdes3_init(struct bxroce_dev *dev)
+{
+		void __iomem *base_addr, *base_addr_mac;
+		base_addr = dev->devinfo.base_addr;
+		u32 regval = 0;
+		
+		regval = 0xc001b000;
+		bxroce_mpb_reg_write(base_addr,PHD_BASE_0,PHDCONTEXT_TDES3,regval);
+
+		return 0;
+
+}
+
 
 static int bxroce_init_phd(struct bxroce_dev *dev)
 {
@@ -340,6 +354,9 @@ static int bxroce_init_phd(struct bxroce_dev *dev)
 		goto phdtxrxdesc_err;
 
 #endif
+	status = phd_context_tdes3_init(dev);
+	if(status)
+		goto phdtxrxdesc_err;
 	
 	status = phd_mac_init(dev);
 	if (status)
@@ -1205,14 +1222,14 @@ static void mac_rdma_config_flow_control_threshold(struct bxroce_dev *dev)
 //                         MTL_Q_RQFCR_RFA_LEN, 2);
 
 	regval = MAC_SET_REG_BITS(regval, MTL_Q_RQFCR_RFA_POS,
-                         MTL_Q_RQFCR_RFA_LEN, 0xe);
+                         MTL_Q_RQFCR_RFA_LEN, 2);
 
         /* De-activate flow control when more than 6k left in fifo */
 //    regval = MAC_SET_REG_BITS(regval, MTL_Q_RQFCR_RFD_POS,
 //                         MTL_Q_RQFCR_RFD_LEN, 4);
 
 	 regval = MAC_SET_REG_BITS(regval, MTL_Q_RQFCR_RFD_POS,
-                         MTL_Q_RQFCR_RFD_LEN, 0x16);
+                         MTL_Q_RQFCR_RFD_LEN, 4);
     writel(regval, MAC_RDMA_MTL_REG(devinfo, RDMA_CHANNEL, MTL_Q_RQFCR));  //by lyp
     
 }

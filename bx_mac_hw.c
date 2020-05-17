@@ -3175,8 +3175,6 @@ static int mac_hw_init(struct mac_pdata *pdata)
 
     /* Initialize DMA related features */
     mac_config_dma_bus(pdata);
-		regval = 0x0f0f08ff;
-		writel(regval, pdata->mac_regs + 0x3004); // config dma_sysbugs_mode
     mac_config_osp_mode(pdata);
     mac_config_pblx8(pdata);
     mac_config_tx_pbl_val(pdata);
@@ -3192,10 +3190,12 @@ static int mac_hw_init(struct mac_pdata *pdata)
     mac_enable_dma_interrupts(pdata);
 
 #if 1 //added by hs
+		regval = 0x0f0f08ff;
+		writel(regval, pdata->mac_regs + 0x3004); // config dma_sysbugs_mode	
 		
 		regval = readl(pdata->mac_regs + 0x3004);
 		printk("rnic 0x3004 regval: 0x%x \n",regval);
-
+		
 		regval = 0x00000001;
 		writel(regval, pdata->mac_regs + 0x3040); // config dma_tx_edma_control
 
@@ -3239,7 +3239,27 @@ static int mac_hw_init(struct mac_pdata *pdata)
     mac_config_mmc(pdata);
     mac_enable_mac_interrupts(pdata);
 
-		//added by hs for loopback in pcs
+
+
+    //insomnia@20200205
+    /* Initialize MAC axi ports features */
+    mac_axi_cfg(&pdata->rnic_pdata,0);
+    //mac_rwtu_cfg(&pdata->rnic_pdata,0);
+    //mac_enable_dspw(&pdata->rnic_pdata,0);
+    
+#ifdef MAXIMIZE_RX_0_FIFO
+    mac_alloc_rx_fifo(&pdata->rnic_pdata,0);
+#endif
+
+#ifdef RNIC_MSI_EN
+    mac_dma_intr_mode_cfg(&pdata->rnic_pdata,0);
+    mac_enable_dma_intr(&pdata->rnic_pdata,0);
+#endif  
+    //mac_print_all_regs(&pdata->rnic_pdata,0);
+    //pcie_print_all_reg(&pdata->rnic_pdata);
+
+    //mac_bandwidth_alloc(&pdata->rnic_pdata,0);
+
 #if 1
 //	struct rnic_pdata *rnic_pdata = &pdata->rnic_pdata;
 //	pcs_loopback_cfg(rnic_pdata,0);
@@ -3268,29 +3288,12 @@ static int mac_hw_init(struct mac_pdata *pdata)
 		regval = MAC_SET_REG_BITS(regval,31,1,1);
 		writel(regval, pdata->mac_regs + MAC_PFR);
 
+		regval = readl(pdata->mac_regs + MAC_RFCR);
+		regval = MAC_SET_REG_BITS(regval,0,1,1);
+		writel(regval, pdata->mac_regs + MAC_RFCR);
+
 #endif
 
-
-
-
-    //insomnia@20200205
-    /* Initialize MAC axi ports features */
-    mac_axi_cfg(&pdata->rnic_pdata,0);
-    //mac_rwtu_cfg(&pdata->rnic_pdata,0);
-    //mac_enable_dspw(&pdata->rnic_pdata,0);
-    
-#ifdef MAXIMIZE_RX_0_FIFO
-    mac_alloc_rx_fifo(&pdata->rnic_pdata,0);
-#endif
-
-#ifdef RNIC_MSI_EN
-    mac_dma_intr_mode_cfg(&pdata->rnic_pdata,0);
-    mac_enable_dma_intr(&pdata->rnic_pdata,0);
-#endif  
-    //mac_print_all_regs(&pdata->rnic_pdata,0);
-    //pcie_print_all_reg(&pdata->rnic_pdata);
-
-    //mac_bandwidth_alloc(&pdata->rnic_pdata,0);
     
     return 0;
 }
