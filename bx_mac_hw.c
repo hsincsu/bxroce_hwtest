@@ -3290,6 +3290,17 @@ static int mac_hw_init(struct mac_pdata *pdata)
 		regval = MAC_SET_REG_BITS(regval,0,1,1);
 		writel(regval, pdata->mac_regs + MAC_RFCR);
 
+
+		regval = 0x03020180;
+		writel(regval, pdata->mac_regs + 0x1030);
+		
+		regval = 0x07800504;
+		writel(regval, pdata->mac_regs + 0x1034);
+
+		regval = 0x0b0a0908;
+		writel(regval,pdata->mac_regs + 0x1038);
+		 
+
 		regval = 0x0f0f08ff;
 		writel(regval, pdata->mac_regs + 0x3004); // config dma_sysbugs_mode	
 		
