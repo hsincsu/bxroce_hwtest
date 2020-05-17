@@ -1641,8 +1641,8 @@ static void mac_config_queue_mapping(struct mac_pdata *pdata)
     unsigned int mask;
     unsigned int i, j;
 	//added by hs 
-	unsigned int tx_q_count=7,tc_cnt=7; //added by lyp to support vf rate setting
-    unsigned int rx_q_count =7; //added by lyp to support vf rate setting
+	//unsigned int tx_q_count=7,tc_cnt=7; //added by lyp to support vf rate setting
+   // unsigned int rx_q_count =7; //added by lyp to support vf rate setting
     
     RNIC_TRACE_PRINT();
 
@@ -1650,17 +1650,17 @@ static void mac_config_queue_mapping(struct mac_pdata *pdata)
      *   Note: Tx Queues >= Traffic Classes
      */
 
-#if 0
+#if 1
     qptc = pdata->tx_q_count / pdata->hw_feat.tc_cnt;
     qptc_extra = pdata->tx_q_count % pdata->hw_feat.tc_cnt;
 #endif
 
-	qptc = tx_q_count / tc_cnt;
-	qptc_extra = tx_q_count % tc_cnt;
+	//qptc = tx_q_count / tc_cnt;
+	//qptc_extra = tx_q_count % tc_cnt;
 		//end modified by hs
 
 
-    for (i = 0, queue = 0; i < tc_cnt/*pdata->hw_feat.tc_cnt*/; i++) {
+    for (i = 0, queue = 0; i < pdata->hw_feat.tc_cnt; i++) {
         for (j = 0; j < qptc; j++) {
             netif_dbg(pdata, drv, pdata->netdev,
                   "TXq%u mapped to TC%u\n", queue, i);
@@ -1692,12 +1692,12 @@ static void mac_config_queue_mapping(struct mac_pdata *pdata)
 
     /* Map the 8 VLAN priority values to available MTL Rx queues */
 
-#if 0
+#if 1
     prio_queues = min_t(unsigned int, IEEE_8021QAZ_MAX_TCS,
                 pdata->rx_q_count);
 #endif
 	// by hs
-	prio_queues = min_t(unsigned int , IEEE_8021QAZ_MAX_TCS,rx_q_count);
+	//prio_queues = min_t(unsigned int , IEEE_8021QAZ_MAX_TCS,rx_q_count);
 
 	ppq = IEEE_8021QAZ_MAX_TCS / prio_queues;
     ppq_extra = IEEE_8021QAZ_MAX_TCS % prio_queues;
@@ -1736,32 +1736,25 @@ static void mac_config_queue_mapping(struct mac_pdata *pdata)
     /* Configure one to one, MTL Rx queue to DMA Rx channel mapping
      *  ie Q0 <--> CH0, Q1 <--> CH1 ... Q11 <--> CH11
      */
-
-#define MTL_RQDCM0R_Q0MDMACH_D 0x80
-#define MTL_RQDCM0R_Q1MDMACH_D 0x00008100
-#define MTL_RQDCM0R_Q2MDMACH_D 0x00820000
-#define MTL_RQDCM0R_Q3MDMACH_D 0x83000000
-
-
     reg = MTL_RQDCM0R;
     regval = readl(pdata->mac_regs + reg);
 
-#if 0
+#if 1
     regval |= (MTL_RQDCM0R_Q0MDMACH | MTL_RQDCM0R_Q1MDMACH |
             MTL_RQDCM0R_Q2MDMACH | MTL_RQDCM0R_Q3MDMACH);
 #endif  //by hs
 
-	regval  = 0x80808080; //added by hs
+	//regval  = 0x80808080; //added by hs
     writel(regval, pdata->mac_regs + reg);
 
     reg += MTL_RQDCM_INC;
-#if 0 //by hs
+#if 1 //by hs
     regval = readl(pdata->mac_regs + reg);
     regval |= (MTL_RQDCM1R_Q4MDMACH | MTL_RQDCM1R_Q5MDMACH |
             MTL_RQDCM1R_Q6MDMACH | MTL_RQDCM1R_Q7MDMACH);
 #endif
 	 
-	regval = 0x80808080; //added by hs
+	//regval = 0x80808080; //added by hs
     writel(regval, pdata->mac_regs + reg);
 
     reg += MTL_RQDCM_INC;
