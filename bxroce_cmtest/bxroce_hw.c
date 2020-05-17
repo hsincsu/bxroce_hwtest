@@ -2030,7 +2030,7 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	mac_rdma_config_flow_control_threshold(dev);
 	mac_rdma_config_rx_fep_enable(dev);
 
-	//mac_rdma_config_q2tcmap(dev);
+	mac_rdma_config_q2tcmap(dev);
 
 	mac_rdma_config_mtl_tc_quantum_weight(dev);
 
