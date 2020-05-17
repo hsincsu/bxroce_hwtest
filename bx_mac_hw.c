@@ -3292,6 +3292,10 @@ static int mac_hw_init(struct mac_pdata *pdata)
 		
 		regval = readl(pdata->mac_regs + 0x3004);
 		printk("rnic 0x3004 regval: 0x%x \n",regval);
+
+		regval = 0x0000000a;
+		writel(regval,pdata->mac_regs + 0x1118);
+
 		
 
 #endif
