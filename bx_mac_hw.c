@@ -3251,6 +3251,10 @@ static int mac_hw_init(struct mac_pdata *pdata)
 #if 1
 //	struct rnic_pdata *rnic_pdata = &pdata->rnic_pdata;
 //	pcs_loopback_cfg(rnic_pdata,0);
+		regval = readl(pdata->mac_regs + MAC_TCR); // CONFIG JD ON
+		regval = MAC_SET_REG_BITS(regval,16,1,1);
+		writel(regval, pdata->mac_regs + MAC_TCR);
+		
 		regval = readl(pdata->mac_regs + MAC_RCR);
 		regval = MAC_SET_REG_BITS(regval,12,3,0x000);
 		writel(regval,pdata->mac_regs + MAC_RCR);
@@ -3262,10 +3266,6 @@ static int mac_hw_init(struct mac_pdata *pdata)
 		regval = readl(pdata->mac_regs + MAC_PFR); // disable vlan filtering
 		regval = MAC_SET_REG_BITS(regval,16,1,0);
 		writel(regval, pdata->mac_regs + MAC_PFR);
-
-		regval = readl(pdata->mac_regs + MAC_TCR); // CONFIG JD ON
-		regval = MAC_SET_REG_BITS(regval,16,1,1);
-		writel(regval, pdata->mac_regs + MAC_TCR);
 
 		regval = readl(pdata->mac_regs + MAC_PFR); // CONFIG PR ON
 		regval = MAC_SET_REG_BITS(regval,0,1,1);

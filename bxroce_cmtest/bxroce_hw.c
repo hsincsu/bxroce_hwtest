@@ -1911,8 +1911,9 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	//mac_mpb_flush_tx_queues(dev);
 	//mac_mpb_config_osp_mode(dev);
 	//flush tx queue
-	 mac_mpb_flush_tx_queues(dev);
-
+	 regval = mac_mpb_flush_tx_queues(dev);
+	 if(regval)
+	 {printk("flush tx err\n");return regval;}
 
 	/***************MAC RELATED REG SETTING*********************/
 	//mac_tcr
