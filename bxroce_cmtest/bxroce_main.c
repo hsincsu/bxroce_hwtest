@@ -321,6 +321,7 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
 	unsigned long testnumber; 
 	int status = 0;
 	u32 regval = 0;
+	struct rnic_pdata *rinc_data = dev->devinfo.rnic_pdata;
 
 	rptr_0      = 0;
     rptr_1      = 0;
@@ -403,6 +404,8 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
 
 		printk("--------------------DMA_CH_CA  printing info end --------------------------\n");
 
+
+		mac_print_all_regs(rnic_pdata,0);
 
 	return status;
 }
