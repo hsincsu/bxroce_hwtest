@@ -3258,7 +3258,10 @@ static int mac_hw_init(struct mac_pdata *pdata)
 #if 1
 //	struct rnic_pdata *rnic_pdata = &pdata->rnic_pdata;
 //	pcs_loopback_cfg(rnic_pdata,0);
-	
+		regval = readl(pdata->mac_regs + MAC_RCR);
+		regval = MAC_SET_REG_BITS(regval,12,3,0x000);
+		writel(regval,pdata->mac_regs + MAC_RCR);
+
         regval = readl(pdata->mac_regs + MAC_RCR);
         regval = MAC_SET_REG_BITS(regval,10,1,1);
         writel(regval, pdata->mac_regs + MAC_RCR);
