@@ -1164,7 +1164,7 @@ static void mac_rdma_config_tx_fifo_size(struct bxroce_dev *dev)
                 pdata->hw_feat.tx_fifo_size,
                 pdata->tx_q_count);
 #endif
-	fifo_size = 11; //pf is 183
+	fifo_size = 0x3f;//11; //pf is 183
 
 // end modified by lyp 20200328
 
@@ -1196,7 +1196,7 @@ static void mac_rdma_config_rx_fifo_size(struct bxroce_dev *dev)
                     pdata->hw_feat.rx_fifo_size,
                     pdata->rx_q_count);
 #endif
-    fifo_size = 11; //pf is 183
+    fifo_size =0x3f;// 11; //pf is 183
 
 // end modified by lyp 20200328
 
@@ -1222,14 +1222,14 @@ static void mac_rdma_config_flow_control_threshold(struct bxroce_dev *dev)
 //                         MTL_Q_RQFCR_RFA_LEN, 2);
 
 	regval = MAC_SET_REG_BITS(regval, MTL_Q_RQFCR_RFA_POS,
-                         MTL_Q_RQFCR_RFA_LEN, 2);
+                         MTL_Q_RQFCR_RFA_LEN, 0xe);
 
         /* De-activate flow control when more than 6k left in fifo */
 //    regval = MAC_SET_REG_BITS(regval, MTL_Q_RQFCR_RFD_POS,
 //                         MTL_Q_RQFCR_RFD_LEN, 4);
 
 	 regval = MAC_SET_REG_BITS(regval, MTL_Q_RQFCR_RFD_POS,
-                         MTL_Q_RQFCR_RFD_LEN, 4);
+                         MTL_Q_RQFCR_RFD_LEN, 0x16);
     writel(regval, MAC_RDMA_MTL_REG(devinfo, RDMA_CHANNEL, MTL_Q_RQFCR));  //by lyp
     
 }
@@ -2044,7 +2044,7 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	mac_rdma_config_tx_pbl_val(dev);
 	mac_rdma_config_rx_pbl_val(dev);
 
-	mac_rdma_config_rx_coalesce(dev); //del by hs for watchdog may not need .
+	//mac_rdma_config_rx_coalesce(dev); //del by hs for watchdog may not need .
 	mac_rdma_config_rx_buffer_size(dev);
 	
 	mac_rdma_config_tso_mode(dev); //may not need

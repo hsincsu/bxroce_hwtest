@@ -1811,7 +1811,7 @@ static void mac_config_tx_fifo_size(struct mac_pdata *pdata)
                 pdata->hw_feat.tx_fifo_size,
                 pdata->tx_q_count);
 #endif
-	fifo_size = 183;
+	fifo_size = 0x3f;//183;
 
     for (i = 0; i < pdata->tx_q_count; i++) {
         regval = readl(MAC_MTL_REG(pdata, i, MTL_Q_TQOMR));
@@ -1838,7 +1838,7 @@ static void mac_config_rx_fifo_size(struct mac_pdata *pdata)
                     pdata->hw_feat.rx_fifo_size,
                     pdata->rx_q_count);
 #endif
-	fifo_size = 183;
+	fifo_size = 0x3f;//183;
 
     for (i = 0; i < pdata->rx_q_count; i++) {
         regval = readl(MAC_MTL_REG(pdata, i, MTL_Q_RQOMR));
@@ -1861,10 +1861,10 @@ static void mac_config_flow_control_threshold(struct mac_pdata *pdata)
         regval = readl(MAC_MTL_REG(pdata, i, MTL_Q_RQFCR));
         /* Activate flow control when less than 4k left in fifo */
         regval = MAC_SET_REG_BITS(regval, MTL_Q_RQFCR_RFA_POS,
-                         MTL_Q_RQFCR_RFA_LEN, 2);
+                         MTL_Q_RQFCR_RFA_LEN, 0xe/*2*/);
         /* De-activate flow control when more than 6k left in fifo */
         regval = MAC_SET_REG_BITS(regval, MTL_Q_RQFCR_RFD_POS,
-                         MTL_Q_RQFCR_RFD_LEN, 4);
+                         MTL_Q_RQFCR_RFD_LEN, 0x16/*4*/);
         writel(regval, MAC_MTL_REG(pdata, i, MTL_Q_RQFCR));
     }
 }
