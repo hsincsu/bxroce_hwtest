@@ -1488,6 +1488,25 @@ static void mac_config_loopback(struct bxroce_dev *dev)
 
 }
 
+static void mac_rdma_config_rqec(struct bxroce_dev *dev)
+{
+
+	 /* Enable each Rx queue */
+	  struct bx_dev_info *devinfo = &dev->devinfo;
+	  u32 regval = 0;
+	
+	 regval = readl(devinfo->mac_base+ MAC_RQEC); //modified by lyp
+ 
+	
+	  j = RDMA_CHANNEL;
+		
+	  regval |= (0x02 << (j << 1)); 
+	  printk("RQEC: regval 0x%x\n",regval);
+	  writel(regval, devinfo->mac_base + MAC_RQEC);
+
+}
+
+
 static void mac_rdma_enable_tx(struct bxroce_dev *dev)
 {
    struct bx_dev_info *devinfo = &dev->devinfo;
@@ -1537,22 +1556,6 @@ static void mac_rdma_enable_tx(struct bxroce_dev *dev)
 						  DMA_CH_RCR_SR_LEN, 1);
 	 writel(regval, MAC_RDMA_DMA_REG(devinfo, DMA_CH_RCR));
  
-
- 
-
- 
- 
-	 /* Enable each Rx queue */
-	  
-	
-	 regval = readl(devinfo->mac_base+ MAC_RQEC); //modified by lyp
- 
-	
-	  j = RDMA_CHANNEL;
-		
-	  regval |= (0x02 << (j << 1)); 
-	  printk("RQEC: regval 0x%x\n",regval);
-	  writel(regval, devinfo->mac_base + MAC_RQEC);
 	  
  
  }
@@ -2009,12 +2012,13 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	/***************MAC RELATED REG SETTING*********************/
 
 	 /*debug by hs for make channel 0 setting same as cm_test*/
+
 	 regval = 0x80000081;
 	 writel(regval, MAC_RDMA_MAC_REG(devinfo,MAC_PFR));
 
 	 regval = 0x00600000;
 	 writel(regval, devinfo->mac_base + 0x0050);
-
+#if 0
 	 regval = 0x003f050a;
 	 writel(regval,devinfo->mac_base + 0x1100);
 
@@ -2042,10 +2046,11 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	 regval = 0x002c001c;
 	 writel(regval,devinfo->mac_base + 0x1150);
 
-	 regval = 0x00200001;
+#endif
+	 regval = 0x00000000;
 	 writel(regval,devinfo->mac_base + 0x3104);
 
-	 regval = 0x00207fe1;
+	 regval = 0x00000000;
 	 writel(regval,devinfo->mac_base + 0x3108);
 	 /*end of debug by hs*/
 
