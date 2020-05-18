@@ -3300,17 +3300,19 @@ static int mac_hw_init(struct mac_pdata *pdata)
 
 		regval = 0x0b0a0908;
 		writel(regval,pdata->mac_regs + 0x1038);
+
+		regval = 0x0000000a;
+		writel(regval,pdata->mac_regs + 0x1118);
+
 		 
+		regval = 0x00000000;
+		writel(regval,pdata->mac_regs + 0x3000);
 
 		regval = 0x0f0f08ff;
 		writel(regval, pdata->mac_regs + 0x3004); // config dma_sysbugs_mode	
 		
 		regval = readl(pdata->mac_regs + 0x3004);
 		printk("rnic 0x3004 regval: 0x%x \n",regval);
-
-		regval = 0x0000000a;
-		writel(regval,pdata->mac_regs + 0x1118);
-
 		
 
 #endif
