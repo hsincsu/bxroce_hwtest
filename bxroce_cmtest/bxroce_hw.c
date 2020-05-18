@@ -1494,6 +1494,7 @@ static void mac_rdma_config_rqec(struct bxroce_dev *dev)
 	 /* Enable each Rx queue */
 	  struct bx_dev_info *devinfo = &dev->devinfo;
 	  u32 regval = 0;
+	  int j = 0;
 	
 	 regval = readl(devinfo->mac_base+ MAC_RQEC); //modified by lyp
  
