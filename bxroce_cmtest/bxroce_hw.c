@@ -1438,7 +1438,7 @@ void mac_rdma_l3_l4_filter_cfg_reg_write(struct bxroce_dev *dev,unsigned int add
     data = rdma_set_bits(data,1,1,0);      //write
     data = rdma_set_bits(data,0,0,1);      //start write
 
-   
+    printk("l3_l4 data: 0x%x\n",data);
 	writel(data, devinfo->mac_base + 0x0c00);
 
 
@@ -2008,8 +2008,40 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 
 	/***************MAC RELATED REG SETTING*********************/
 
+	 /*debug by hs for make channel 0 setting same as cm_test*/
+	 regval = 0x80000081;
+	 writel(regval, MAC_RDMA_MAC_REG(devinfo,MAC_PFR));
 
+	 regval = 0x003f050a;
+	 writel(regval,devinfo->mac_base + 0x1100);
 
+	 regval = 0x003f00f0;
+	 writel(regval,devinfo->mac_base + 0x1140);
+
+	 regval = 0x00010000;
+	 writel(regval,devinfo->mac_base + 0x1170);
+
+	 regval = 0x00010000;
+	 writel(regval,devinfo->mac_base + 0x3100);
+
+	 regval = 0x0000c0c5;
+	 writel(regval,devinfo->mac_base + 0x3138);
+
+	 regval = 0x000003ff;
+	 writel(regval,devinfo->mac_base + 0x3130);
+
+	 regval = 0x000003ff;
+	 writel(regval,devinfo->mac_base + 0x3134);
+
+	 regval = 0x002c001c;
+	 writel(regval,devinfo->mac_base + 0x1150);
+
+	 regval = 0x00200001;
+	 writel(regval,devinfo->mac_base + 0x3104);
+
+	 regval = 0x00207fe1;
+	 writel(regval,devinfo->mac_base + 0x3108);
+	 /*end of debug by hs*/
 
 	/*MTL RELATED REG SETTING*/
 //	mac_rdma_config_tsf_mode(dev,dev->devinfo.pdata->tx_sf_mode);
