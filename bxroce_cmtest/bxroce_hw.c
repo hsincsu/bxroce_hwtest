@@ -2015,6 +2015,9 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	 regval = 0x003f050a;
 	 writel(regval,devinfo->mac_base + 0x1100);
 
+	 regval = 0x00000000;
+	 writel(regval,devinfo->mac_base + 0x1110);
+
 	 regval = 0x003f00f0;
 	 writel(regval,devinfo->mac_base + 0x1140);
 
