@@ -2110,7 +2110,7 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	mac_rdma_channel_mpb_l3_l4_filter_on(dev);
 
 	//mac_config_loopback(dev);
-
+	mac_rdma_config_rqec(dev);
 	//enable tx and rx
 	mac_rdma_enable_tx(dev);
 	mac_rdma_enable_rx(dev);
