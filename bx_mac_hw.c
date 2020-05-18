@@ -3207,7 +3207,7 @@ static int mac_hw_init(struct mac_pdata *pdata)
     mac_enable_mtl_interrupts(pdata);
 
 #if 1 //added by hs
-	regval = 0x00200000;//0x00002000; //to channel 6;
+	regval = 0x00002000;//0x00002000; //to channel 6;
 	writel(regval, pdata->mac_regs + 0x1044); // config mtl_tc_prty_map1
 
 
@@ -3289,13 +3289,13 @@ static int mac_hw_init(struct mac_pdata *pdata)
 		regval = 0x08040201;
 		writel(regval, pdata->mac_regs + 0x160);
 
-		regval = 0x00200010;
+		regval = 0x00c02010;
 		writel(regval, pdata->mac_regs + 0x164);
 
 		regval = 0x03020180;
 		writel(regval, pdata->mac_regs + 0x1030);
 		
-		regval = 0x07800504;
+		regval = 0x07068004;
 		writel(regval, pdata->mac_regs + 0x1034);
 
 		regval = 0x0b0a0908;
