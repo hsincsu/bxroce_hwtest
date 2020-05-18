@@ -237,6 +237,7 @@ int bxroce_cm_test_msg_recv(struct bxroce_dev *dev)
 			rdata = bxroce_mpb_reg_read(base_addr,CM_CFG,CMMSGRECEIVESRAMSTATE);
 			if (rdma_get_bits(rdata, 0, 0) == 1)
 			{
+				printk("clear intr, nothing received\n");
 				bxroce_mpb_reg_write(base_addr,CM_CFG,CM_REG_ADDR_ERR_INT_STA_CLR,0x3); // clear intr
 				break;
 			}
