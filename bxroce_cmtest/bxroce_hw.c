@@ -2012,6 +2012,9 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	 regval = 0x80000081;
 	 writel(regval, MAC_RDMA_MAC_REG(devinfo,MAC_PFR));
 
+	 regval = 0x00600000;
+	 writel(regval, devinfo->mac_base + 0x0050);
+
 	 regval = 0x003f050a;
 	 writel(regval,devinfo->mac_base + 0x1100);
 
