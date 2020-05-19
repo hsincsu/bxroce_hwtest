@@ -394,12 +394,24 @@ static int bxroce_init_cm(struct bxroce_dev *dev)
 	void __iomem *base_addr;
 	base_addr = dev->devinfo.base_addr;
 
+	u8 *addr;
+	addr = dev->devinfo.mac_addr;	
+
+	BXROCE_PR("mac addr is %x\n",addr[5]);//added by hs for info
+
+	unsigned int macaddr_l =0;
+	unsigned int  macaddr_h = 0;
+	macaddr_h = (addr[5]<<8)|(addr[4]<<0);
+	macaddr_l = (addr[3]<<24)|(addr[2]<<16)|(addr[1]<<8)|(addr[0]<<0);
+
 	/*write cmcfg*/
 	bxroce_mpb_reg_write(base_addr,CM_CFG,CMLOGEN,0x7);
 	bxroce_mpb_reg_write(base_addr,CM_CFG,CMERREN,0x7);
 	bxroce_mpb_reg_write(base_addr,CM_CFG,CMINTEN,0x7);
 
-
+	bxroce_mpb_reg_write(base_addr,CM_CFG,CM_REG_ADDR_MSG_SEND_MSG_LLP_INFO_0,0x7f000001);
+	bxroce_mpb_reg_write(base_addr,CM_CFG,CM_REG_ADDR_MSG_SEND_MSG_LLP_INFO_4,macaddr_l);
+	bxroce_mpb_reg_write(base_addr,CM_CFG,CM_REG_ADDR_MSG_SEND_MSG_LLP_INFO_5,macaddr_h);
 
 	return 0;
 }
