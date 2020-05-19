@@ -3206,15 +3206,6 @@ static int mac_hw_init(struct mac_pdata *pdata)
     mac_config_rx_fup_enable(pdata);
     mac_enable_mtl_interrupts(pdata);
 
-#if 1 //added by hs
-	regval = 0x00002000;//0x00002000; //to channel 6;
-	writel(regval, pdata->mac_regs + 0x1044); // config mtl_tc_prty_map1
-
-
-	regval = 0x00000101;
-	writel(regval, pdata->mac_regs + 0x0090); // config mac_rfcr;
-
-#endif
 
     /* Initialize MAC related features */
     mac_config_mac_address(pdata);
@@ -3249,8 +3240,13 @@ static int mac_hw_init(struct mac_pdata *pdata)
     //mac_bandwidth_alloc(&pdata->rnic_pdata,0);
 
 #if 1
-//	struct rnic_pdata *rnic_pdata = &pdata->rnic_pdata;
-//	pcs_loopback_cfg(rnic_pdata,0);
+
+		regval = 0x00200000;//0x00002000; //to channel 6;
+		writel(regval, pdata->mac_regs + 0x1044); // config mtl_tc_prty_map1
+
+		regval = 0x00000101;
+		writel(regval, pdata->mac_regs + 0x0090); // config mac_rfcr;
+
 		regval = readl(pdata->mac_regs + MAC_TCR); // CONFIG JD ON
 		regval = MAC_SET_REG_BITS(regval,16,1,1);
 		writel(regval, pdata->mac_regs + MAC_TCR);
@@ -3298,13 +3294,13 @@ static int mac_hw_init(struct mac_pdata *pdata)
 		regval = 0x08040201;
 		writel(regval, pdata->mac_regs + 0x160);
 
-		regval = 0x00c02010;
+		regval = 0x00200010;
 		writel(regval, pdata->mac_regs + 0x164);
 
 		regval = 0x03020180;
 		writel(regval, pdata->mac_regs + 0x1030);
 		
-		regval = 0x07068004;
+		regval = 0x07800504;
 		writel(regval, pdata->mac_regs + 0x1034);
 
 		regval = 0x0b0a0908;
