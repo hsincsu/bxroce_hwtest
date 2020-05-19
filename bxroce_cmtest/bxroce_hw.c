@@ -180,6 +180,12 @@ static int phd_ipv4_init(struct bxroce_dev *dev)
 	base_addr = dev->devinfo.base_addr;
 	netdev = dev->devinfo.netdev;
 	
+	//debug local
+	bxroce_mpb_reg_write(base_addr,PHD_BASE_0,PHD_REG_ADDR_IPV4_SOURCE_ADDR,0x0100007f);
+
+	return 0;
+	//end debug local
+#if 0 //added b ys
 	pdev_ipaddr = (struct in_device *)netdev->ip_ptr;
 	if(pdev_ipaddr == NULL)
 	{BXROCE_PR("ipv4 NOT INIT SUCCEED1\n"); return 0; }
@@ -190,6 +196,7 @@ static int phd_ipv4_init(struct bxroce_dev *dev)
 	BXROCE_PR("ipv4: %x",addr_k);//added by hs for info
 
 	bxroce_mpb_reg_write(base_addr,PHD_BASE_0,PHDIPV4SOURCEADDR,addr_k);
+#endif
 #if 0
 	bxroce_mpb_reg_write(base_addr,PHD_BASE_1,PHDIPV4SOURCEADDR,addr_k);
 #endif
@@ -2130,7 +2137,7 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 
 	mac_print_all_regs(rnic_pdata,0);//
 
-	mac_rdma_print_regval(dev);
+	//mac_rdma_print_regval(dev);
 
 
 	//mac_mpb_channel_cfg(rnic_pdata,0);
