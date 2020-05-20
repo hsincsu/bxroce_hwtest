@@ -363,6 +363,10 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
 		}
 		msleep(1000);
 	}
+	//make sure recv is all over.
+	status = bxroce_cm_test_msg_recv(dev);
+	if(status == -1)
+		return status;
 	printk("------------------CM_RANDOME_TEST END--------------- \n");
 
 
