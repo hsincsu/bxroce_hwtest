@@ -359,8 +359,6 @@ static int bxroce_init_phd(struct bxroce_dev *dev)
 	status = phd_rxdesc_init(dev);
 	if (status)
 		goto phdtxrxdesc_err;
-
-
 	status = phd_context_tdes3_init(dev);
 	if(status)
 		goto phdtxrxdesc_err;
