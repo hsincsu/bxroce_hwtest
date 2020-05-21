@@ -351,7 +351,7 @@ static int bxroce_init_phd(struct bxroce_dev *dev)
 
 	int status;
 
-#if 1 //added by hs
+#if 0 //added by hs
 
 	status = phd_txdesc_init(dev);
 	if (status)
@@ -360,11 +360,11 @@ static int bxroce_init_phd(struct bxroce_dev *dev)
 	if (status)
 		goto phdtxrxdesc_err;
 
-#endif
+
 	status = phd_context_tdes3_init(dev);
 	if(status)
 		goto phdtxrxdesc_err;
-	
+#endif	
 	status = phd_mac_init(dev);
 	if (status)
 		goto mac_err;
