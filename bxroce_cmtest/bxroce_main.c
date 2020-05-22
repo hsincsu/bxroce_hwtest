@@ -225,7 +225,7 @@ int bxroce_cm_test_msg_recv(struct bxroce_dev *dev)
 
 	rdata = bxroce_mpb_reg_read(base_addr,CM_CFG,CMERRINTSTA);
 	printk("cm_test_msg_recv1: 0x%x \n",rdata);
-	rdata = rdata | 0x1;
+//	rdata = rdata | 0x1;
 
 	printk("cm_test_msg_recv2: 0x%x \n",rdata);
 	if (rdma_get_bits(rdata, 0, 0) == 1)
