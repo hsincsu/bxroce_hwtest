@@ -77,6 +77,60 @@ unsigned int rdma_get_bits (unsigned int data,unsigned int index_h,unsigned int 
 
 
 
+
+static void mac_rdma_enable_tx(struct bxroce_dev *dev)
+{
+   struct bx_dev_info *devinfo = &dev->devinfo;
+   u32 regval;
+   
+    
+    RNIC_TRACE_PRINT();
+
+    /* Enable each Tx DMA channel */
+    
+    regval = readl(MAC_RDMA_DMA_REG(devinfo, DMA_CH_TCR));
+    regval = MAC_SET_REG_BITS(regval, DMA_CH_TCR_ST_POS,
+                         DMA_CH_TCR_ST_LEN, 1);
+    writel(regval, MAC_RDMA_DMA_REG(devinfo, DMA_CH_TCR));
+	
+    
+
+    /* Enable each Tx queue */
+    
+
+    regval = readl(MAC_RDMA_MTL_REG(devinfo, RDMA_CHANNEL, MTL_Q_TQOMR));  //by lyp
+    regval = MAC_SET_REG_BITS(regval, MTL_Q_TQOMR_TXQEN_POS,
+                         MTL_Q_TQOMR_TXQEN_LEN,
+                    MTL_Q_ENABLED);
+    writel(regval, MAC_RDMA_MTL_REG(devinfo, RDMA_CHANNEL, MTL_Q_TQOMR));  //by lyp
+
+
+
+}
+
+
+ 
+ 
+ static void mac_rdma_enable_rx(struct bxroce_dev *dev)
+ {
+	 struct bx_dev_info *devinfo = &dev->devinfo;
+	 unsigned int regval,j;
+	
+	 
+	 RNIC_TRACE_PRINT();
+ 
+	 /* Enable each Rx DMA channel */
+	
+ 
+	 regval = readl(MAC_RDMA_DMA_REG(devinfo, DMA_CH_RCR));
+	 regval = MAC_SET_REG_BITS(regval, DMA_CH_RCR_SR_POS,
+						  DMA_CH_RCR_SR_LEN, 1);
+	 writel(regval, MAC_RDMA_DMA_REG(devinfo, DMA_CH_RCR));
+ 
+	  
+ 
+ }
+
 static int phd_start(struct bxroce_dev *dev)
 {
 	void __iomem *base_addr;
@@ -1529,59 +1583,6 @@ static void mac_rdma_config_rqec(struct bxroce_dev *dev)
 
 }
 
-
-static void mac_rdma_enable_tx(struct bxroce_dev *dev)
-{
-   struct bx_dev_info *devinfo = &dev->devinfo;
-   u32 regval;
-   
-    
-    RNIC_TRACE_PRINT();
-
-    /* Enable each Tx DMA channel */
-    
-    regval = readl(MAC_RDMA_DMA_REG(devinfo, DMA_CH_TCR));
-    regval = MAC_SET_REG_BITS(regval, DMA_CH_TCR_ST_POS,
-                         DMA_CH_TCR_ST_LEN, 1);
-    writel(regval, MAC_RDMA_DMA_REG(devinfo, DMA_CH_TCR));
-	
-    
-
-    /* Enable each Tx queue */
-    
-
-    regval = readl(MAC_RDMA_MTL_REG(devinfo, RDMA_CHANNEL, MTL_Q_TQOMR));  //by lyp
-    regval = MAC_SET_REG_BITS(regval, MTL_Q_TQOMR_TXQEN_POS,
-                         MTL_Q_TQOMR_TXQEN_LEN,
-                    MTL_Q_ENABLED);
-    writel(regval, MAC_RDMA_MTL_REG(devinfo, RDMA_CHANNEL, MTL_Q_TQOMR));  //by lyp
-
-
-
-}
-
-
- 
- 
- static void mac_rdma_enable_rx(struct bxroce_dev *dev)
- {
-	 struct bx_dev_info *devinfo = &dev->devinfo;
-	 unsigned int regval,j;
-	
-	 
-	 RNIC_TRACE_PRINT();
- 
-	 /* Enable each Rx DMA channel */
-	
- 
-	 regval = readl(MAC_RDMA_DMA_REG(devinfo, DMA_CH_RCR));
-	 regval = MAC_SET_REG_BITS(regval, DMA_CH_RCR_SR_POS,
-						  DMA_CH_RCR_SR_LEN, 1);
-	 writel(regval, MAC_RDMA_DMA_REG(devinfo, DMA_CH_RCR));
- 
-	  
- 
- }
  
 static void mac_rdma_config_q2tcmap(struct bxroce_dev *dev)
 {
