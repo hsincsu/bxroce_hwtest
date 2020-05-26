@@ -384,6 +384,10 @@ static irqreturn_t mac_isr(int irq, void *data)
     struct mac_hw_ops *hw_ops;
     unsigned int i, ti, ri;
     
+	//just to debug 6 channel if dma irq happen or not
+	unsigned int j = 7; //added by hs
+
+
     RNIC_TRACE_PRINT();
 
     hw_ops = &pdata->hw_ops;
@@ -400,16 +404,27 @@ static irqreturn_t mac_isr(int irq, void *data)
 
     netif_dbg(pdata, intr, pdata->netdev, "DMA_ISR=%#010x\n", dma_isr);
 
-    for (i = 0; i < pdata->channel_count; i++) {
+    for (i = 0; i < 7/*pdata->channel_count*/; i++) {
         if (!(dma_isr & (1 << i)))
             continue;
 
+		if(i == 0)
+		{
         channel = pdata->channel_head + i;
 
         dma_ch_isr = readl(MAC_DMA_REG(channel, DMA_CH_SR));
         netif_dbg(pdata, intr, pdata->netdev, "DMA_CH%u_ISR=%#010x\n",
               i, dma_ch_isr);
+		printk("mac_isr: PF :DMA_CH%u,dma_ch_isr=%x\n",i,dma_ch_isr);
+		}
+		else{
+			channel = pdata->channel_head; // from 0 channel to access other channel reg by hs.
 
+			 dma_ch_isr = readl(channel->dma_regs + i*DMA_CH_INC+DMA_CH_SR);
+
+			 
+			printk("mac_isr: other channel :DMA_CH%u,dma_ch_isr=%x\n",i,dma_ch_isr);
+		}
         /* The TI or RI interrupt bits may still be set even if using
          * per channel DMA interrupts. Check to be sure those are not
          * enabled before using the private data napi structure.
@@ -419,6 +434,10 @@ static irqreturn_t mac_isr(int irq, void *data)
         ri = MAC_GET_REG_BITS(dma_ch_isr, DMA_CH_SR_RI_POS,
                      DMA_CH_SR_RI_LEN);
                      
+		printk("DMA_CH_SR,channel number:%d  TI:%d, RI:%d\n",i,ti,ri);//added by hs
+
+
+#if 0
         if (!pdata->per_channel_irq && (ti || ri)) {
             if (napi_schedule_prep(&pdata->napi)) {
                 
@@ -429,7 +448,36 @@ static irqreturn_t mac_isr(int irq, void *data)
                 __napi_schedule_irqoff(&pdata->napi);
             }
         }
+#endif
+#ifdef RNIC_LEGACY_INT_EN //added by hs
+		if(i >= 1)
+		{
+					if(ti||ri)
+			{
+				 printk("DMA_CHANNEL_%d irq happen!\n",i);
+			
+				 goto sync;
+			}
+			writel(0x0,channel->dma_regs + i*DMA_CH_INC+DMA_CH_SR);
+		
+		}
+		else
+		{
+			
+			if (!pdata->per_channel_irq && (ti || ri)) {
+				if (napi_schedule_prep(&pdata->napi)) {
+                
+					 mac_disable_rx_tx_ints(pdata);
 
+					 pdata->stats.napi_poll_isr++;
+
+					 __napi_schedule_irqoff(&pdata->napi);
+				}
+			}
+		}
+#endif
+		if(i == 0)
+		{
         if (MAC_GET_REG_BITS(dma_ch_isr, DMA_CH_SR_TPS_POS,
                     DMA_CH_SR_TPS_LEN))
             pdata->stats.tx_process_stopped++;
@@ -452,9 +500,10 @@ static irqreturn_t mac_isr(int irq, void *data)
             pdata->stats.fatal_bus_error++;
             schedule_work(&pdata->restart_work);
         }
+		}
 
         /* Clear all interrupt signals */
-        writel(dma_ch_isr, MAC_DMA_REG(channel, DMA_CH_SR)); 
+sync:        writel(dma_ch_isr, MAC_DMA_REG(channel, DMA_CH_SR)); 
     }
 
     if (MAC_GET_REG_BITS(dma_isr, DMA_ISR_MACIS_POS,
