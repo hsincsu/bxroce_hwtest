@@ -92,6 +92,11 @@ static int phd_start(struct bxroce_dev *dev)
 	BXROCE_PR("PHD0START:0x%x \n",data);
 	data = bxroce_mpb_reg_read(base_addr,PHD_BASE_1,PHDSTART);
 	BXROCE_PR("PHD1START:0x%x \n",data);
+
+
+	mac_rdma_enable_tx(dev);
+	mac_rdma_enable_rx(dev);
+
 	return 0;
 }
 
@@ -2130,8 +2135,6 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	mac_rdma_config_rqec(dev);
 	//enable tx and rx
 
-	mac_rdma_enable_tx(dev);
-	mac_rdma_enable_rx(dev);
 	//end added by lyp
 
 	mac_print_all_regs(rnic_pdata,0);//
