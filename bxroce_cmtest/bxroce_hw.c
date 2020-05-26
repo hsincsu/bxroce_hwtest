@@ -2164,12 +2164,13 @@ int bxroce_init_hw(struct bxroce_dev *dev)
 	status = bxroce_init_cm(dev);
 	if (status)
 		goto errcm;
-	status = bxroce_init_pbu(dev);
-	if(status)
-		goto err_pbu;
 		status = bxroce_init_phd(dev);
 	if (status)
 		goto errphd;
+
+        status = bxroce_init_pbu(dev);
+        if(status)
+                goto err_pbu;
 
 #if 0 //added by hs
 	status = bxroce_init_pgu_wqe(dev);
