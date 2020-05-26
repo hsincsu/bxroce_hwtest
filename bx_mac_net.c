@@ -452,13 +452,13 @@ static irqreturn_t mac_isr(int irq, void *data)
 #ifdef RNIC_LEGACY_INT_EN //added by hs
 		if(i >= 1)
 		{
-					if(ti||ri)
+			if(ti||ri)
 			{
 				 printk("DMA_CHANNEL_%d irq happen!\n",i);
 			
 				 goto sync;
 			}
-			writel(0x0,channel->dma_regs + i*DMA_CH_INC+DMA_CH_SR);
+			//writel(0x0,channel->dma_regs + i*DMA_CH_INC+DMA_CH_SR);
 		
 		}
 		else
