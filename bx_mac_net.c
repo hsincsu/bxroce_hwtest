@@ -816,13 +816,19 @@ static irqreturn_t rnic_msi_isr_6(int irq, void *data)
     printk("%s:irq happen\n",__func__);//added by hs
     RNIC_TRACE_PRINT();
 
+#if 0 //added by hs
     channel = pdata->channel_head + 6;
     dma_ch_isr = readl(MAC_DMA_REG(channel, DMA_CH_SR));
-    
+#endif 
+//added by hs
+    channel = pdata->channel_head; //for cust_channel_num to 1 ,so 6 is not exist in pf.
+    dma_ch_isr = readl(channel->dma_regs + i*DMA_CH_INC+DMA_CH_SR);
+//end add
     ti = MAC_GET_REG_BITS(dma_ch_isr, DMA_CH_SR_TI_POS, DMA_CH_SR_TI_LEN);
 
     if(ti)
     {
+        #if 0 //added by hs for nothing to do if cm test.
         if (napi_schedule_prep(&pdata->napi_msi_mac_0_tx_6__cm))
         {
             disable_irq_nosync(pdata->dev_irq + 6);
@@ -831,6 +837,7 @@ static irqreturn_t rnic_msi_isr_6(int irq, void *data)
 
             __napi_schedule_irqoff(&pdata->napi_msi_mac_0_tx_6__cm);
         }
+        #endif
 
         mac_clear_dma_intr_tx(&pdata->rnic_pdata,0,6);
     }
@@ -1046,14 +1053,19 @@ static irqreturn_t rnic_msi_isr_13(int irq, void *data)
     int dma_ch_isr;
     printk("%s:irq happen\n",__func__);//added by hs
     RNIC_TRACE_PRINT();
-
+    #if 0 //added by hs
     channel = pdata->channel_head + 6;
     dma_ch_isr = readl(MAC_DMA_REG(channel, DMA_CH_SR));
-    
+    #endif 
+    //added by hs
+    channel = pdata->channel_head; //for cust_channel_num to 1 ,so 6 is not exist in pf.
+    dma_ch_isr = readl(channel->dma_regs + 6*DMA_CH_INC+DMA_CH_SR);
+    //end add
     ri = MAC_GET_REG_BITS(dma_ch_isr, DMA_CH_SR_RI_POS, DMA_CH_SR_RI_LEN);
 
     if(ri)
     {
+        #if 0 //added byhs
         if (napi_schedule_prep(&pdata->napi_msi_mac_0_rx_6))
         {
             disable_irq_nosync(pdata->dev_irq + 13);
@@ -1062,6 +1074,7 @@ static irqreturn_t rnic_msi_isr_13(int irq, void *data)
 
             __napi_schedule_irqoff(&pdata->napi_msi_mac_0_rx_6);
         }
+        #endif
 
         mac_clear_dma_rx_intr(&pdata->rnic_pdata,0,6);
     }
