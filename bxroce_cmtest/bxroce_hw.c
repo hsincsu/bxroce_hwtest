@@ -147,10 +147,6 @@ static int phd_start(struct bxroce_dev *dev)
 	data = bxroce_mpb_reg_read(base_addr,PHD_BASE_1,PHDSTART);
 	BXROCE_PR("PHD1START:0x%x \n",data);
 
-
-	mac_rdma_enable_tx(dev);
-	mac_rdma_enable_rx(dev);
-
 	return 0;
 }
 
@@ -228,9 +224,9 @@ static int phd_ipv6_init(struct bxroce_dev *dev)
 
 static int phd_ipv4_init(struct bxroce_dev *dev)
 {
-	//ÐÞ¸Ä£º
-	//Ôö¼ÓÅÐ¶Ï½Ó¿ÚÊÇ·ñÓÐIPµØÖ·£¬ÓÃ°²È«º¯Êý·ÃÎÊIPµØÖ·¡£
-	//Éè¼ÆÒ»¸öNotifier»úÖÆÀ´ËæÊ±×¼±¸¸üÐÂipµØÖ·¡£
+	//ï¿½Þ¸Ä£ï¿½
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ï½Ó¿ï¿½ï¿½Ç·ï¿½ï¿½ï¿½IPï¿½ï¿½Ö·ï¿½ï¿½ï¿½Ã°ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½IPï¿½ï¿½Ö·ï¿½ï¿½
+	//ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Notifierï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±×¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ipï¿½ï¿½Ö·ï¿½ï¿½
 	void __iomem *base_addr;
 	struct net_device *netdev;
 	struct in_device *pdev_ipaddr = NULL;
@@ -348,7 +344,7 @@ static int phd_rxdesc_init(struct bxroce_dev *dev)
 
 static int phd_txdesc_init(struct bxroce_dev *dev)
 {
-	/*¶ÔPhdµÄ·¢ËÍÃèÊö·û½øÐÐ³õÊ¼»¯*/
+	/*ï¿½ï¿½Phdï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð³ï¿½Ê¼ï¿½ï¿½*/
 	void __iomem *base_addr, *base_addr_mac;
 	base_addr = dev->devinfo.base_addr;
 	int channel_count = dev->devinfo.channel_count;
@@ -2135,7 +2131,8 @@ static int bxroce_init_mac_channel(struct bxroce_dev *dev)
 	//mac_config_loopback(dev);
 	mac_rdma_config_rqec(dev);
 	//enable tx and rx
-
+	mac_rdma_enable_tx(dev);
+	mac_rdma_enable_rx(dev);
 	//end added by lyp
 
 	mac_print_all_regs(rnic_pdata,0);//

@@ -346,7 +346,7 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
 
 
 	
-	testnumber = 100;
+	testnumber = 25;
 	printk("------------------CM_RANDOME_TEST START--------------- \n");
 	while (testnumber-- )
 	{
@@ -364,6 +364,8 @@ static int bxroce_cm_test(struct bxroce_dev *dev)
 		msleep(1000);
 	}
 	//make sure recv is all over.
+	status = bxroce_cm_test_msg_recv(dev);
+	status = bxroce_cm_test_msg_recv(dev);
 	status = bxroce_cm_test_msg_recv(dev);
 	if(status == -1)
 		return status;
@@ -457,6 +459,39 @@ err_cm_test:
 static void bx_remove(struct bxroce_dev *dev)
 {
 	BXROCE_PR("bxrove:bx_remove start\n");//added by hs for printing bx_remove info
+	u32 regval = 0;
+	void __iomem *base_addr;
+	base_addr = dev->devinfo.base_addr;
+	struct bx_dev_info *devinfo = &dev->devinfo;
+
+	//ib_unregister_device(&dev->ibdev);
+	/*disable some hw function*/
+	//disable pgu
+	//disable phd
+	bxroce_mpb_reg_write(base_addr,PHD_BASE_0,PHD_REG_ADDR_PHD_START,0);
+
+	//wait for tx to stop --add later
+
+	//disable tx queue
+	regval = readl(MAC_RDMA_MTL_REG(devinfo,RDMA_CHANNEL,MTL_Q_TQOMR));
+	regval = MAC_SET_REG_BITS(regval,MTL_Q_TQOMR_TXQEN_POS,MTL_Q_TQOMR_TXQEN_LEN,0);
+	BXROCE_PR("disable rxqueue: 0x%x \n",regval);
+	writel(regval,MAC_RDMA_MTL_REG(devinfo,RDMA_CHANNEL,MTL_Q_TQOMR));
+
+	//disable tx dma channel
+	regval = readl(MAC_RDMA_DMA_REG(devinfo,DMA_CH_TCR));
+	regval = MAC_SET_REG_BITS(regval,DMA_CH_TCR_ST_POS,DMA_CH_TCR_ST_LEN,0);
+	BXROCE_PR("disable txdma channel: 0x%x \n",regval);
+	writel(regval,MAC_RDMA_DMA_REG(devinfo,DMA_CH_TCR));
+
+	//wait for rx to stop --add later
+
+	//disable rx DMA CHANNEL
+	regval = readl(MAC_RDMA_DMA_REG(devinfo,DMA_CH_RCR));
+	regval = MAC_SET_REG_BITS(regval,DMA_CH_RCR_SR_POS,DMA_CH_RCR_SR_LEN,0);
+	BXROCE_PR("disable rxdma channel: 0x%x \n",regval);
+	writel(regval,MAC_RDMA_DMA_REG(devinfo,DMA_CH_RCR));
+	
 	if(dev)
 	kfree(dev);
 	BXROCE_PR("bxroce:bx_remove succeed end \n");//added by hs for printing bx_remove info

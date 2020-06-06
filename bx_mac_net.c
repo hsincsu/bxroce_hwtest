@@ -456,9 +456,11 @@ static irqreturn_t mac_isr(int irq, void *data)
 			{
 				 printk("DMA_CHANNEL_%d irq happen!\n",i);
 			
-				 goto sync;
+				ieu_clear_intr_tx_rx_all(&pdata->rnic_pdata);		
+				
+			//	 goto sync;
 			}
-			//writel(0x0,channel->dma_regs + i*DMA_CH_INC+DMA_CH_SR);
+			writel(dma_ch_isr,channel->dma_regs + i*DMA_CH_INC+DMA_CH_SR);
 		
 		}
 		else
